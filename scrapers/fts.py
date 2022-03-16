@@ -315,6 +315,7 @@ class FTS(BaseScraper):
             total_allreq = data["totals"]["revisedRequirements"]
             total_allfund = data["totals"]["totalFunding"]
             total_allpercent = get_fraction_str(data["totals"]["progress"], 100)
+            # FIXME: use regional not world value
             regional_values = self.get_values("regional")
             regional_values[0]["value"] = total_allreq
             regional_values[1]["value"] = total_allfund
