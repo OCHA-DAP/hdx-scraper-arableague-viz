@@ -27,8 +27,8 @@ def update_tab(outputs, name, data):
         output.update_tab(name, data)
 
 
-def update_regional(runner, outputs):
-    rows = runner.get_rows("regional", ("value",))
+def update_regional(runner, names, outputs):
+    rows = runner.get_rows("regional", ("value",), names=names)
     update_tab(outputs, "regional", rows)
 
 
@@ -40,7 +40,7 @@ def update_national(runner, names, countries, outputs):
     update_tab(outputs, "national", rows)
 
 
-def update_subnational(runner, adminone, outputs):
+def update_subnational(runner, names, adminone, outputs):
     def get_country_name(adm):
         countryiso3 = adminone.pcode_to_iso3[adm]
         return Country.get_country_name_from_iso3(countryiso3)
@@ -51,7 +51,9 @@ def update_subnational(runner, adminone, outputs):
         lambda adm: adm,
         lambda adm: adminone.pcode_to_name[adm],
     )
-    rows = runner.get_rows("subnational", adminone.pcodes, subnational_headers, fns)
+    rows = runner.get_rows(
+        "subnational", adminone.pcodes, subnational_headers, fns, names=names
+    )
     update_tab(outputs, "subnational", rows)
 
 
