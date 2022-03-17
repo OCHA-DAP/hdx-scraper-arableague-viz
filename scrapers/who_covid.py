@@ -76,7 +76,6 @@ class WHOCovid(BaseScraper):
         df_cumulative = df_cumulative.drop(
             columns=["Date_reported", "New_cases", "New_deaths"]
         )
-        df_world = df_cumulative.sum()
         df_cumulative = df_cumulative.loc[df["ISO_3_CODE"].isin(self.countries), :]
         df_regional = df_cumulative.sum()
 
@@ -92,18 +91,13 @@ class WHOCovid(BaseScraper):
         df["Date_reported"] = pd.to_datetime(df["Date_reported"])
         source_date = df["Date_reported"].max()
 
-        # adding regional by date
-        df_regional_all = df.groupby("Date_reported").sum()
-        df_regional_all["ISO_3_CODE"] = "GHO"
-        df_regional_all = df_regional_all.reset_index()
-
-        return source_date, df_world, df_regional, df_series, df_regional_all
+        return source_date, df_regional, df_series, df
 
     def run(self) -> None:
         read_hdx_metadata(self.datasetinfo, today=self.today)
 
         # get WHO data
-        source_date, df_world, df_regional, df_series, df_WHO = self.get_who_data(
+        source_date, df_regional, df_series, df_WHO = self.get_who_data(
             self.datasetinfo["url"]
         )
         df_pop = pd.DataFrame.from_records(

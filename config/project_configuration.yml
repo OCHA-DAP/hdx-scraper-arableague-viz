@@ -938,6 +938,18 @@ scraper_regional:
       - "PeopleInNeed"
     output_hxltags:
       - "#affected+inneed"
+  inneed_numcountries:
+    dataset: "interagency-response-plans"
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSUJdFPpj3N6m4L5XiZSl1OQm7oVcclVM3IDQm1P6K5SfuBNIB2M0-BJhdR0KQ-w95lJUiC4wMWw9RP/pub?gid=881913165&single=true&output=csv"
+    format: "csv"
+    use_hxl: True
+    input_cols:
+      - "#meta+countries+num"
+    output_cols:
+      - "NumCountriesInNeed"
+    output_hxltags:
+      - "#meta+countries+inneed+num"
+
 
 # subnational
 ipc:
@@ -975,196 +987,196 @@ scraper_subnational:
       - "NoHealthFacilities"
     output_hxltags:
       - "#loc+count+health"
-#  worldhealthorg:
-#    source: "WHO"
-#    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfjaIXE1hvEIXD66g6cuCbPrGdZkx6vLIgXO_znVbjQ-OgwfaI1kJPhxhgjw2Yg08CmtBuMLAZkTnu/pub?gid=337443769&single=true&output=csv"
-#    format: "csv"
-#    adm_cols:
-#      - "iso"
-#      - "Admin1"
-#    date_col: "Year"
-#    date_type: "year"
-#    filter_cols:
-#      - "Vaccine"
-#    subsets:
-#      - filter: "Vaccine == 'HepB1'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "HepB1 Coverage"
-#        output_hxltags:
-#          - "#population+hepb1+pct+vaccinated"
-#      - filter: "Vaccine == 'HepB2'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "HepB2 Coverage"
-#        output_hxltags:
-#          - "#population+hepb2+pct+vaccinated"
-#      - filter: "Vaccine == 'HepB3'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "HepB3 Coverage"
-#        output_hxltags:
-#          - "#population+hepb3+pct+vaccinated"
-#      - filter: "Vaccine == 'IPV1'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "IPV1 Coverage"
-#        output_hxltags:
-#          - "#population+ipv1+pct+vaccinated"
-#      - filter: "Vaccine == 'MCV1'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "MCV1 Coverage"
-#        output_hxltags:
-#          - "#population+mcv1+pct+vaccinated"
-#      - filter: "Vaccine == 'MCV2'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "MCV2 Coverage"
-#        output_hxltags:
-#          - "#population+mcv2+pct+vaccinated"
-#      - filter: "Vaccine == 'Pol1'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "Pol1 Coverage"
-#        output_hxltags:
-#          - "#population+pct+pol1+vaccinated"
-#      - filter: "Vaccine == 'Pol2'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "Pol2 Coverage"
-#        output_hxltags:
-#          - "#population+pct+pol2+vaccinated"
-#      - filter: "Vaccine == 'Pol3'"
-#        input_cols:
-#          - "Numerator"
-#          - "Denominator"
-#        input_ignore_vals:
-#          - "-2222"
-#          - "-4444"
-#        input_transforms:
-#          Numerator: "get_numeric_if_possible(Numerator)"
-#          Denominator: "get_numeric_if_possible(Denominator)"
-#        sum_cols:
-#          - formula: "get_fraction_str(Numerator, Denominator)"
-#            mustbepopulated: True
-#        output_cols:
-#          - "Pol3 Coverage"
-#        output_hxltags:
-#          - "#population+pct+pol3+vaccinated"
-#  gam:
-#    dataset: "world-global-expanded-database-on-severe-wasting"
-#    format: "xlsx"
-#    sheet: "Trend"
-#    headers:
-#      - 3
-#      - 4
-#    flatten:
-#      - original: "Region {{1}} Region Name"
-#        new: "Region Name"
-#      - original: "Region {{1}} Point Estimate"
-#        new: "Region Point Estimate"
-#    adm_cols:
-#      - "ISO"
-#      - "Region Name"
-#    date_col: "Year*"
-#    date_type: "year"
-#    input_cols:
-#      - "Region Point Estimate"
-#    input_transforms:
-#      "Region Point Estimate": "number_format(Region Point Estimate, trailing_zeros=False)"
-#    output_cols:
-#      - "Malnutrition Estimate"
-#    output_hxltags:
-#      - "#severity+malnutrition+num+subnational"
+  worldhealthorg:
+    source: "WHO"
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfjaIXE1hvEIXD66g6cuCbPrGdZkx6vLIgXO_znVbjQ-OgwfaI1kJPhxhgjw2Yg08CmtBuMLAZkTnu/pub?gid=337443769&single=true&output=csv"
+    format: "csv"
+    adm_cols:
+      - "iso"
+      - "Admin1"
+    date_col: "Year"
+    date_type: "year"
+    filter_cols:
+      - "Vaccine"
+    subsets:
+      - filter: "Vaccine == 'HepB1'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "HepB1 Coverage"
+        output_hxltags:
+          - "#population+hepb1+pct+vaccinated"
+      - filter: "Vaccine == 'HepB2'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "HepB2 Coverage"
+        output_hxltags:
+          - "#population+hepb2+pct+vaccinated"
+      - filter: "Vaccine == 'HepB3'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "HepB3 Coverage"
+        output_hxltags:
+          - "#population+hepb3+pct+vaccinated"
+      - filter: "Vaccine == 'IPV1'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "IPV1 Coverage"
+        output_hxltags:
+          - "#population+ipv1+pct+vaccinated"
+      - filter: "Vaccine == 'MCV1'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "MCV1 Coverage"
+        output_hxltags:
+          - "#population+mcv1+pct+vaccinated"
+      - filter: "Vaccine == 'MCV2'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "MCV2 Coverage"
+        output_hxltags:
+          - "#population+mcv2+pct+vaccinated"
+      - filter: "Vaccine == 'Pol1'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "Pol1 Coverage"
+        output_hxltags:
+          - "#population+pct+pol1+vaccinated"
+      - filter: "Vaccine == 'Pol2'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "Pol2 Coverage"
+        output_hxltags:
+          - "#population+pct+pol2+vaccinated"
+      - filter: "Vaccine == 'Pol3'"
+        input_cols:
+          - "Numerator"
+          - "Denominator"
+        input_ignore_vals:
+          - "-2222"
+          - "-4444"
+        input_transforms:
+          Numerator: "get_numeric_if_possible(Numerator)"
+          Denominator: "get_numeric_if_possible(Denominator)"
+        sum_cols:
+          - formula: "get_fraction_str(Numerator, Denominator)"
+            mustbepopulated: True
+        output_cols:
+          - "Pol3 Coverage"
+        output_hxltags:
+          - "#population+pct+pol3+vaccinated"
+  gam:
+    dataset: "world-global-expanded-database-on-severe-wasting"
+    format: "xlsx"
+    sheet: "Trend"
+    headers:
+      - 3
+      - 4
+    flatten:
+      - original: "Region {{1}} Region Name"
+        new: "Region Name"
+      - original: "Region {{1}} Point Estimate"
+        new: "Region Point Estimate"
+    adm_cols:
+      - "ISO"
+      - "Region Name"
+    date_col: "Year*"
+    date_type: "year"
+    input_cols:
+      - "Region Point Estimate"
+    input_transforms:
+      "Region Point Estimate": "number_format(Region Point Estimate, trailing_zeros=False)"
+    output_cols:
+      - "Malnutrition Estimate"
+    output_hxltags:
+      - "#severity+malnutrition+num+subnational"
 
 whowhatwhere:
   source: "OCHA"
@@ -1204,40 +1216,6 @@ country_name_overrides:
 country_name_mappings:
 
 admin1_info:
-  - {country: Afghanistan, iso3: AFG, pcode: AF17, name: Badakhshan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF31, name: Badghis}
-  - {country: Afghanistan, iso3: AFG, pcode: AF09, name: Baghlan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF21, name: Balkh}
-  - {country: Afghanistan, iso3: AFG, pcode: AF10, name: Bamyan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF24, name: Daykundi}
-  - {country: Afghanistan, iso3: AFG, pcode: AF33, name: Farah}
-  - {country: Afghanistan, iso3: AFG, pcode: AF29, name: Faryab}
-  - {country: Afghanistan, iso3: AFG, pcode: AF11, name: Ghazni}
-  - {country: Afghanistan, iso3: AFG, pcode: AF23, name: Ghor}
-  - {country: Afghanistan, iso3: AFG, pcode: AF30, name: Hilmand}
-  - {country: Afghanistan, iso3: AFG, pcode: AF32, name: Hirat}
-  - {country: Afghanistan, iso3: AFG, pcode: AF28, name: Jawzjan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF01, name: Kabul}
-  - {country: Afghanistan, iso3: AFG, pcode: AF27, name: Kandahar}
-  - {country: Afghanistan, iso3: AFG, pcode: AF02, name: Kapisa}
-  - {country: Afghanistan, iso3: AFG, pcode: AF14, name: Khost}
-  - {country: Afghanistan, iso3: AFG, pcode: AF15, name: Kunar}
-  - {country: Afghanistan, iso3: AFG, pcode: AF19, name: Kunduz}
-  - {country: Afghanistan, iso3: AFG, pcode: AF07, name: Laghman}
-  - {country: Afghanistan, iso3: AFG, pcode: AF05, name: Logar}
-  - {country: Afghanistan, iso3: AFG, pcode: AF04, name: Maidan Wardak}
-  - {country: Afghanistan, iso3: AFG, pcode: AF06, name: Nangarhar}
-  - {country: Afghanistan, iso3: AFG, pcode: AF34, name: Nimroz}
-  - {country: Afghanistan, iso3: AFG, pcode: AF16, name: Nuristan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF12, name: Paktika}
-  - {country: Afghanistan, iso3: AFG, pcode: AF13, name: Paktya}
-  - {country: Afghanistan, iso3: AFG, pcode: AF08, name: Panjsher}
-  - {country: Afghanistan, iso3: AFG, pcode: AF03, name: Parwan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF20, name: Samangan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF22, name: Sar E Pul}
-  - {country: Afghanistan, iso3: AFG, pcode: AF18, name: Takhar}
-  - {country: Afghanistan, iso3: AFG, pcode: AF25, name: Uruzgan}
-  - {country: Afghanistan, iso3: AFG, pcode: AF26, name: Zabul}
   - {country: Iraq, iso3: IRQ, pcode: IQG01, name: Al Anbar}
   - {country: Iraq, iso3: IRQ, pcode: IQG02, name: Al Basrah}
   - {country: Iraq, iso3: IRQ, pcode: IQG03, name: Al Muthanna}
@@ -1301,8 +1279,6 @@ admin1_info:
 
 admin1_name_mappings:
   "MUTHANA": "IQG03"
-  "Gezira": "SD15"
-  "Gazira": "SD15"
   "Hasaka": "SY08"
   "Hassake": "SY08"
   "al-raka": "SY11"

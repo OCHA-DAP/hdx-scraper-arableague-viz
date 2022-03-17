@@ -221,6 +221,8 @@ class FTS(BaseScraper):
                 list(self.reg_reqfund_hxltags.keys()),
                 list(self.reg_reqfund_hxltags.values()),
             ]
+            regional_hrp_req = 0
+            regional_hrp_fund = 0
             for plan in plans:
                 plan_id = str(plan["id"])
                 plan_name = plan["name"]
@@ -252,11 +254,13 @@ class FTS(BaseScraper):
                     if plan_type == "humanitarian response plan":
                         if allreq:
                             hrp_requirements[countryiso] = allreq
+                            regional_hrp_req += allreq
                         else:
                             hrp_requirements[countryiso] = None
                         if allfund and allreq:
                             hrp_funding[countryiso] = allfund
                             hrp_percentage[countryiso] = allpct
+                            regional_hrp_req += allfund
                         covidfund = self.get_covid_funding(
                             plan_id, plan_name, fundingobjects
                         )
@@ -312,14 +316,11 @@ class FTS(BaseScraper):
                 other_percentage[countryiso] = create_output(
                     other_percentage[countryiso]
                 )
-            total_allreq = data["totals"]["revisedRequirements"]
-            total_allfund = data["totals"]["totalFunding"]
-            total_allpercent = get_fraction_str(data["totals"]["progress"], 100)
-            # FIXME: use regional not world value
+            regional_hrp_percent = get_fraction_str(regional_hrp_fund, regional_hrp_req)
             regional_values = self.get_values("regional")
-            regional_values[0]["value"] = total_allreq
-            regional_values[1]["value"] = total_allfund
-            regional_values[2]["value"] = total_allpercent
+            regional_values[0]["value"] = regional_hrp_req
+            regional_values[1]["value"] = regional_hrp_fund
+            regional_values[2]["value"] = regional_hrp_percent
             tabname = "regional_reqfund"
             for output in self.outputs.values():
                 output.update_tab(tabname, reg_reqfund_output)
