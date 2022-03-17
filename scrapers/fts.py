@@ -260,7 +260,7 @@ class FTS(BaseScraper):
                         if allfund and allreq:
                             hrp_funding[countryiso] = allfund
                             hrp_percentage[countryiso] = allpct
-                            regional_hrp_req += allfund
+                            regional_hrp_fund += allfund
                         covidfund = self.get_covid_funding(
                             plan_id, plan_name, fundingobjects
                         )
