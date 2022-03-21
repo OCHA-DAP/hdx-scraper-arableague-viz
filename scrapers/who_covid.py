@@ -250,7 +250,7 @@ class WHOCovid(BaseScraper):
             national_columns.append(
                 dict(zip(df_national["ISO_3_CODE"], df_national[header].map(fn)))
             )
-        self.datasetinfo["date"] = source_date
+        self.datasetinfo["source_date"] = source_date
         for i, values in enumerate(self.get_values("national")):
             values.update(national_columns[i])
         regional_values = self.get_values("regional")

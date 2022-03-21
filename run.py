@@ -85,7 +85,7 @@ def main(
     use_saved,
     **ignore,
 ):
-    logger.info(f"##### hdx-scraper-ukraine-viz version {VERSION:.1f} ####")
+    logger.info(f"##### hdx-scraper-arabstate-viz version {VERSION:.1f} ####")
     configuration = Configuration.read()
     with ErrorsOnExit() as errors_on_exit:
         with temp_dir() as temp_folder:
