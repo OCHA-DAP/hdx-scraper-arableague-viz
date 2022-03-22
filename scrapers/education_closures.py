@@ -9,9 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class EducationClosures(BaseScraper):
-    def __init__(
-        self, datasetinfo: Dict, today, countryiso3s, downloader
-    ):
+    def __init__(self, datasetinfo: Dict, today, countryiso3s, downloader):
         super().__init__(
             "education_closures",
             datasetinfo,

@@ -158,10 +158,7 @@ class WHOCovid(BaseScraper):
         ]
 
         # Viz and daily PDF trend epi weekly (non-rolling) output
-        resampled = (
-            df_WHO.groupby(["ISO_3_CODE"])
-            .resample("W", on="Date_reported")
-        )
+        resampled = df_WHO.groupby(["ISO_3_CODE"]).resample("W", on="Date_reported")
         new_w = resampled.sum()[["New_cases", "New_deaths"]]
         ndays_w = resampled.count()["New_cases"]
         ndays_w = ndays_w.rename("ndays")
