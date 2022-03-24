@@ -1330,6 +1330,18 @@ admin1_info:
   - {country: Iraq, iso3: IRQ, pcode: IQG16, name: Salah Al Din}
   - {country: Iraq, iso3: IRQ, pcode: IQG17, name: Thi Qar}
   - {country: Iraq, iso3: IRQ, pcode: IQG18, name: Wassit}
+  - {country: Jordan, iso3: JOR, pcode: JO01, name: Ajlun}
+  - {country: Jordan, iso3: JOR, pcode: JO02, name: Amman}
+  - {country: Jordan, iso3: JOR, pcode: JO03, name: Aqaba}
+  - {country: Jordan, iso3: JOR, pcode: JO04, name: Balqa}
+  - {country: Jordan, iso3: JOR, pcode: JO05, name: Irbid}
+  - {country: Jordan, iso3: JOR, pcode: JO06, name: Jarash}
+  - {country: Jordan, iso3: JOR, pcode: JO07, name: Karak}
+  - {country: Jordan, iso3: JOR, pcode: JO08, name: Madaba}
+  - {country: Jordan, iso3: JOR, pcode: JO09, name: Mafraq}
+  - {country: Jordan, iso3: JOR, pcode: JO10, name: "Ma'an"}
+  - {country: Jordan, iso3: JOR, pcode: JO11, name: Tafilah}
+  - {country: Jordan, iso3: JOR, pcode: JO12, name: Zarqa}
   - {country: Kuwait, iso3: KWT, pcode: KW01, name: Al Ahmadi}
   - {country: Kuwait, iso3: KWT, pcode: KW02, name: Al Farwaniyah}
   - {country: Kuwait, iso3: KWT, pcode: KW03, name: Al Jahrah}
@@ -1455,9 +1467,9 @@ admin1_info:
   - {country: Syrian Arab Republic, iso3: SYR, pcode: SY03, name: Rural Damascus}
   - {country: Syrian Arab Republic, iso3: SYR, pcode: SY10, name: Tartous}
   - {country: Tunisia, iso3: TUN, pcode: TN01, name: Ariana}
+  - {country: Tunisia, iso3: TUN, pcode: TN02, name: Beja}
   - {country: Tunisia, iso3: TUN, pcode: TN03, name: Ben Arous}
   - {country: Tunisia, iso3: TUN, pcode: TN04, name: Bizerte}
-  - {country: Tunisia, iso3: TUN, pcode: TN02, name: Beja}
   - {country: Tunisia, iso3: TUN, pcode: TN05, name: Gabes}
   - {country: Tunisia, iso3: TUN, pcode: TN06, name: Gafsa}
   - {country: Tunisia, iso3: TUN, pcode: TN07, name: Jendouba}
@@ -1467,8 +1479,8 @@ admin1_info:
   - {country: Tunisia, iso3: TUN, pcode: TN11, name: Le Kef}
   - {country: Tunisia, iso3: TUN, pcode: TN13, name: Mahdia}
   - {country: Tunisia, iso3: TUN, pcode: TN14, name: Manubah}
+  - {country: Tunisia, iso3: TUN, pcode: TN12, name: Medenine}
   - {country: Tunisia, iso3: TUN, pcode: TN15, name: Monastir}
-  - {country: Tunisia, iso3: TUN, pcode: TN12, name: Médenine}
   - {country: Tunisia, iso3: TUN, pcode: TN16, name: Nabeul}
   - {country: Tunisia, iso3: TUN, pcode: TN17, name: Sfax}
   - {country: Tunisia, iso3: TUN, pcode: TN18, name: Sidi Bou Zid}
