@@ -675,277 +675,109 @@ education_enrolment:
   resource: "Enrollment data"
   format: "xlsx"
 
+aggregation_regional:
+    "#population":
+      action: "sum"
+    "#affected+infected":
+      action: "sum"
+    "#affected+killed":
+      action: "sum"
+    "#affected+inneed":
+      action: "sum"
+    "#value+cbpf+funding+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gmempty+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm0+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm1+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm2+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm3+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm4+total+usd":
+      action: "sum"
+    "#value+cerf+funding+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gmempty+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm0+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm1+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm2+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm3+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm4+total+usd":
+      action: "sum"
+    "#value+funding+hrp+required+usd":
+      output: "RequiredFunding"
+      action: "sum"
+    "#value+funding+hrp+total+usd":
+      output: "Funding"
+      action: "sum"
+    "#value+funding+hrp+pct":
+      output: "PercentFunded"
+      action: "eval"
+      formula: "get_fraction_str(#value+funding+hrp+total+usd, #value+funding+hrp+required+usd) if #value+funding+hrp+total+usd is not None and #value+funding+hrp+required+usd is not None else ''"
+    "#access+visas+pct":
+      action: "mean"
+    "#access+travel+pct":
+      action: "mean"
+    "#event+year+todate+num":
+      action: "sum"
+    "#activity+cerf+project+insecurity+pct":
+      action: "mean"
+    "#activity+cbpf+project+insecurity+pct":
+      action: "mean"
+    "#vaccination+postponed+num":
+      action: "sum"
+    "#capacity+doses+delivered+covax":
+      action: "sum"
+    "#capacity+doses+delivered+others":
+      action: "sum"
+    "#capacity+doses+delivered+total":
+      action: "sum"
+    "#capacity+doses+administered+total":
+      action: "sum"
+    "#affected+children+sam":
+      action: "sum"
+    "#capacity+doses+forecast+covax":
+      action: "sum"
+    "#value+financing+worldbank+approved":
+      action: "sum"
+    "#value+financing+gavi+earlyaccess+approved":
+      action: "sum"
+    "#value+financing+gavi+needs+approved":
+      action: "sum"
+    "#value+financing+gavi+earlyaccess+disbursed":
+      action: "sum"
+    "#value+financing+gavi+needs+disbursed":
+      action: "sum"
+    "#value+financing+approved":
+      action: "sum"
+    "#affected+food+ipc+p3plus+num":
+      output: "FoodInsecurityP3+"
+      action: "sum"
+      input:
+        - "#affected+ch+food+p3plus+num"
+        - "#affected+food+ipc+p3plus+num"
+
 scraper_regional:
-  allocations:
-    source:
-      "#value+cbpf+funding+total+usd": "CBPF"
-      "#value+cbpf+funding+gmempty+total+usd": "CBPF"
-      "#value+cbpf+funding+gm0+total+usd": "CBPF"
-      "#value+cbpf+funding+gm1+total+usd": "CBPF"
-      "#value+cbpf+funding+gm2+total+usd": "CBPF"
-      "#value+cbpf+funding+gm3+total+usd": "CBPF"
-      "#value+cbpf+funding+gm4+total+usd": "CBPF"
-      "default_source": "CERF"
-    source_url:
-      "#value+cbpf+funding+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gmempty+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gm0+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gm1+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gm2+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gm3+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "#value+cbpf+funding+gm4+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "default_url": "https://data.humdata.org/dataset/cerf-allocations"
-    dataset: "cerf-allocations"
-    url: "https://cbpfgms.github.io/pfbi-data/download/full_pfmb_allocations.csv"
-    format: "csv"
-    sort:
-      reverse: True
-      keys:
-        - "AllocationYear"
-    date: "AllocationYear"
-    date_type: "year"
-    single_maxdate: True
-    filter_cols:
-      - "FundType"
-      - "GenderMarker"
-    subsets:
-      - filter: "FundType == 'CBPF'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFunding"
-        output_hxl:
-          - "#value+cbpf+funding+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == ''"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGMEmpty"
-        output_hxl:
-          - "#value+cbpf+funding+gmempty+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == '0'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGM0"
-        output_hxl:
-          - "#value+cbpf+funding+gm0+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == '1'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGM1"
-        output_hxl:
-          - "#value+cbpf+funding+gm1+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == '2'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGM2"
-        output_hxl:
-          - "#value+cbpf+funding+gm2+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == '3'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGM3"
-        output_hxl:
-          - "#value+cbpf+funding+gm3+total+usd"
-      - filter: "FundType == 'CBPF' and GenderMarker == '4'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CBPFFundingGM4"
-        output_hxl:
-          - "#value+cbpf+funding+gm4+total+usd"
-      - filter: "FundType == 'CERF'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFunding"
-        output_hxl:
-          - "#value+cerf+funding+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == ''"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGMEmpty"
-        output_hxl:
-          - "#value+cerf+funding+gmempty+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == '0'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGM0"
-        output_hxl:
-          - "#value+cerf+funding+gm0+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == '1'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGM1"
-        output_hxl:
-          - "#value+cerf+funding+gm1+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == '2'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGM2"
-        output_hxl:
-          - "#value+cerf+funding+gm2+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == '3'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGM3"
-        output_hxl:
-          - "#value+cerf+funding+gm3+total+usd"
-      - filter: "FundType == 'CERF' and GenderMarker == '4'"
-        input:
-          - "Budget"
-        transform:
-          Budget: "float(Budget)"
-        sum:
-          - formula: "Budget"
-        output:
-          - "CERFFundingGM4"
-        output_hxl:
-          - "#value+cerf+funding+gm4+total+usd"
-  contributions:
-    source:
-      "#value+cbpf+funding+total+usd": "CBPF"
-      "default_source": "CERF"
-    source_url:
-      "#value+cbpf+funding+total+usd": "https://data.humdata.org/dataset/cbpf-allocations-and-contributions"
-      "default_url": "https://data.humdata.org/dataset/cerf-allocations"
-    dataset: "cerf-allocations"
-    url: "https://cbpfgms.github.io/pfbi-data/download/pfmb_contributions.csv"
-    format: "csv"
-    sort:
-      reverse: True
-      keys:
-        - "FiscalYear"
-    date: "FiscalYear"
-    date_type: "year"
-    single_maxdate: True
-    filter_cols:
-      - "FundType"
-    subsets:
-      - filter: "FundType == 'CBPF'"
-        input:
-          - "PaidAmt"
-          - "PledgeAmt"
-        transform:
-          PaidAmt: "float(PaidAmt) if PaidAmt else 0"
-          PledgeAmt: "float(PledgeAmt)"
-        sum:
-          - formula: "PaidAmt+PledgeAmt"
-        output:
-          - "CBPFContributions"
-        output_hxl:
-          - "#value+cbpf+contributions+total+usd"
-      - filter: "FundType == 'CERF'"
-        input:
-          - "PaidAmt"
-          - "PledgeAmt"
-        transform:
-          PaidAmt: "float(PaidAmt) if PaidAmt else 0"
-          PledgeAmt: "float(PledgeAmt)"
-        sum:
-          - formula: "PaidAmt+PledgeAmt"
-        output:
-          - "CERFContributions"
-        output_hxl:
-          - "#value+cerf+contributions+total+usd"
-  ourworldindata:
-    dataset: "covid-19-vaccinations"
-    format: "csv"
-    use_hxl: True
-    filter_cols:
-      - "#country+code"
-    prefilter: "#country+code == 'OWID_WRL'"
-    date: "#date"
-    date_type: "date"
-    input:
-      - "#total+vaccinations"
-    output:
-      - "TotalDosesAdministered"
-    output_hxl:
-      - "#capacity+doses+administered+total"
-  inneed:
-    dataset: "interagency-response-plans"
-    format: "csv"
-    use_hxl: True
-    filter_cols:
-      - "#meta+included"
-    prefilter: "#meta+included == 'TRUE'"
-    input:
-      - "#inneed"
-    sum:
-      - formula: "#inneed"
-    output:
-      - "PeopleInNeed"
-    output_hxl:
-      - "#affected+inneed"
   inneed_numcountries:
     dataset: "interagency-response-plans"
-    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSUJdFPpj3N6m4L5XiZSl1OQm7oVcclVM3IDQm1P6K5SfuBNIB2M0-BJhdR0KQ-w95lJUiC4wMWw9RP/pub?gid=881913165&single=true&output=csv"
     format: "csv"
     use_hxl: True
+    prefilter: "#meta+included == 'TRUE'"
+    find_tags: True
     input:
-      - "#meta+countries+num"
+      - "#meta+included"
+    transform:
+      "#meta+included": "1"
+    sum:
+      - formula: "#meta+included"
     output:
       - "NumCountriesInNeed"
     output_hxl:

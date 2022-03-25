@@ -2,6 +2,7 @@ import logging
 
 from hdx.location.adminone import AdminOne
 from hdx.location.country import Country
+from hdx.scraper.configurable.aggregator import Aggregator
 from hdx.scraper.runner import Runner
 
 from .covax_deliveries import CovaxDeliveries
@@ -124,7 +125,7 @@ def get_indicators(
         configuration["whowhatwhere"], today, adminone, downloader
     )
     iomdtm = IOMDTM(configuration["iom_dtm"], today, adminone, downloader)
-    regional_names = ["who_covid", "fts"] + configurable_scrapers["regional"]
+    regional_names = ["who_covid"] + configurable_scrapers["regional"]
 
     subnational_names = configurable_scrapers["subnational"] + [
         "whowhatwhere",
@@ -148,6 +149,16 @@ def get_indicators(
             iomdtm,
         )
     )
+
+    regional_scrapers = Aggregator.get_scrapers(
+        configuration["aggregation_regional"],
+        "national",
+        "regional",
+        countries,
+        runner,
+    )
+    regional_names.extend(runner.add_customs(regional_scrapers, add_to_run=True))
+
     runner.run(
         prioritise_scrapers=(
             "population_national",

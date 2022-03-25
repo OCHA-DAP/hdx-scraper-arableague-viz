@@ -46,7 +46,6 @@ class WHOCovid(BaseScraper):
             datasetinfo,
             {
                 "national": (tuple(national_headers), tuple(national_hxltags)),
-                "regional": (tuple(base_headers), tuple(base_hxltags)),
             },
         )
         self.today = today
@@ -77,7 +76,6 @@ class WHOCovid(BaseScraper):
             columns=["Date_reported", "New_cases", "New_deaths"]
         )
         df_cumulative = df_cumulative.loc[df["ISO_3_CODE"].isin(self.countries), :]
-        df_regional = df_cumulative.sum()
 
         df = df.loc[df["ISO_3_CODE"].isin(self.countries), :]
 
@@ -91,13 +89,13 @@ class WHOCovid(BaseScraper):
         df["Date_reported"] = pd.to_datetime(df["Date_reported"])
         source_date = df["Date_reported"].max()
 
-        return source_date, df_regional, df_series, df
+        return source_date, df_series, df
 
     def run(self) -> None:
         read_hdx_metadata(self.datasetinfo, today=self.today)
 
         # get WHO data
-        source_date, df_regional, df_series, df_WHO = self.get_who_data(
+        source_date, df_series, df_WHO = self.get_who_data(
             self.datasetinfo["url"]
         )
         df_pop = pd.DataFrame.from_records(
@@ -250,6 +248,3 @@ class WHOCovid(BaseScraper):
         self.datasetinfo["source_date"] = source_date
         for i, values in enumerate(self.get_values("national")):
             values.update(national_columns[i])
-        regional_values = self.get_values("regional")
-        regional_values[0]["value"] = int(df_regional["Cumulative_cases"])
-        regional_values[1]["value"] = int(df_regional["Cumulative_deaths"])
