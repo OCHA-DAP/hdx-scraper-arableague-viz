@@ -125,7 +125,6 @@ def get_indicators(
         configuration["whowhatwhere"], today, adminone, downloader
     )
     iomdtm = IOMDTM(configuration["iom_dtm"], today, adminone, downloader)
-    regional_names = ["who_covid"] + configurable_scrapers["regional"]
 
     subnational_names = configurable_scrapers["subnational"] + [
         "whowhatwhere",
@@ -157,7 +156,8 @@ def get_indicators(
         countries,
         runner,
     )
-    regional_names.extend(runner.add_customs(regional_scrapers, add_to_run=True))
+    regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
+    regional_names.extend(configurable_scrapers["regional"])
 
     runner.run(
         prioritise_scrapers=(
