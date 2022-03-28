@@ -1097,21 +1097,13 @@ admin1_info:
   - {country: Algeria, iso3: DZA, pcode: DZ046, name: Tissemsilt}
   - {country: Algeria, iso3: DZA, pcode: DZ047, name: Tizi Ouzou}
   - {country: Algeria, iso3: DZA, pcode: DZ048, name: Tlemcen}
-  - {country: Bahrain, iso3: BHR, pcode: BH562, name: Central Region}
-  - {country: Bahrain, iso3: BHR, pcode: BH563, name: Hamad Town}
-  - {country: Bahrain, iso3: BHR, pcode: BH564, name: Hawar Island}
-  - {country: Bahrain, iso3: BHR, pcode: BH565, name: Hidd}
-  - {country: Bahrain, iso3: BHR, pcode: BH566, name: Isa Town}
-  - {country: Bahrain, iso3: BHR, pcode: BH567, name: Jidhafs}
-  - {country: Bahrain, iso3: BHR, pcode: BH568, name: Manama}
-  - {country: Bahrain, iso3: BHR, pcode: BH569, name: Muharraq}
-  - {country: Bahrain, iso3: BHR, pcode: BH570, name: Northern Region}
-  - {country: Bahrain, iso3: BHR, pcode: BH571, name: Riffa}
-  - {country: Bahrain, iso3: BHR, pcode: BH572, name: Sitra}
-  - {country: Bahrain, iso3: BHR, pcode: BH573, name: Western Region}
-  - {country: Comoros, iso3: COM, pcode: KM1, name: Anjouan}
-  - {country: Comoros, iso3: COM, pcode: KM2, name: Grande Comore}
-  - {country: Comoros, iso3: COM, pcode: KM3, name: Moheli}
+  - {country: Bahrain, iso3: BHR, pcode: BH13, name: Capital}
+  - {country: Bahrain, iso3: BHR, pcode: BH15, name: Muharraq}
+  - {country: Bahrain, iso3: BHR, pcode: BH17, name: Northern}
+  - {country: Bahrain, iso3: BHR, pcode: BH14, name: Southern}
+  - {country: Comoros, iso3: COM, pcode: KM3, name: Mwali}
+  - {country: Comoros, iso3: COM, pcode: KM1, name: Ndzouani}
+  - {country: Comoros, iso3: COM, pcode: KM2, name: Ngazidja}
   - {country: Djibouti, iso3: DJI, pcode: DJ05, name: Ali Sabeh}
   - {country: Djibouti, iso3: DJI, pcode: DJ03, name: Dilkhil}
   - {country: Djibouti, iso3: DJI, pcode: DJ04, name: Djibouti}
@@ -1363,6 +1355,24 @@ admin1_name_mappings:
   "Rural-Dam": "SY03"
   "al-qunitara": "SY14"
   "Sana'a Govt.": "YE23"
+  "BORDJ BOU ARRERIDJ": "DZ011"
+  "BAGHDAD-KARKH": "IQG08"
+  "BAGHDAD-RESAFA": "IQG08"
+  "NOUAKCHOTT NORD": "MR10"
+  "NOUAKCHOTT OUEST": "MR10"
+  "NOUAKCHOTT SUD": "MR10"
+  "DHAKHILIA": "OM01"
+  "Dakhiliya": "OM01"
+  "North Batinah": "OM02"
+  "N.BATINA": "OM02"
+  "South Batinah": "OM03"
+  "S.BATINA": "OM03"
+  "North Sharqia": "OM07"
+  "N.SHARQIA": "OM07"
+  "South Sharqia": "OM08"
+  "S.SHARQIA": "OM08"
+  "AlWousta": "OM06"
+  "Djibouti Ville": "DJ04"
 
 admin1_name_replacements:
   " urban": ""
