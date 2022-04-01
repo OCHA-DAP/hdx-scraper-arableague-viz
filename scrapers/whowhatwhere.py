@@ -35,7 +35,10 @@ class WhoWhatWhere(BaseScraper):
                 continue
             try:
                 dataset = Dataset.read_from_hdx(dataset_name)
-                resource = dataset.get_resource(0)
+                if "iati" in dataset_name:
+                    resource = dataset.get_resource(1)
+                else:
+                    resource = dataset.get_resource(0)
             except HDXError:
                 logger.warning(
                     f"Could not download resource data for {countryiso3}. Check dataset name."
