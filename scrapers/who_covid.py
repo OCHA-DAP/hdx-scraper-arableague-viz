@@ -95,9 +95,7 @@ class WHOCovid(BaseScraper):
         read_hdx_metadata(self.datasetinfo, today=self.today)
 
         # get WHO data
-        source_date, df_series, df_WHO = self.get_who_data(
-            self.datasetinfo["url"]
-        )
+        source_date, df_series, df_WHO = self.get_who_data(self.datasetinfo["url"])
         df_pop = pd.DataFrame.from_records(
             list(self.population_lookup.items()), columns=["Country Code", "population"]
         )

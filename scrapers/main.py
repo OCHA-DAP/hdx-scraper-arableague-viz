@@ -16,10 +16,13 @@ from .ipc_old import IPC
 from .unhcr import UNHCR
 from .utilities.region_lookups import RegionLookups
 from .utilities.update_tabs import (
+    get_regional_rows,
+    get_regions_rows,
     update_national,
     update_regional,
+    update_regions,
     update_sources,
-    update_subnational, get_regions_rows, update_regions, get_regional_rows,
+    update_subnational,
 )
 from .vaccination_campaigns import VaccinationCampaigns
 from .who_covid import WHOCovid
@@ -169,11 +172,10 @@ def get_indicators(
         )
     )
 
-
     regional_names = configurable_scrapers["regional"]
-    regions_rows = get_regions_rows(
-        runner, regions_names, RegionLookups.regions
-    )
+    regional_names.extend(["education_closures", "education_enrolment"])
+
+    regions_rows = get_regions_rows(runner, regions_names, RegionLookups.regions)
     if "national" in tabs:
         update_national(
             runner,
@@ -183,9 +185,7 @@ def get_indicators(
         )
     if "regions" in tabs:
         regional_rows = get_regional_rows(runner, ())
-        additional_regional_headers = (
-            "NumCountriesInNeed",
-        )
+        additional_regional_headers = ("NumCountriesInNeed",)
         update_regions(
             outputs,
             regions_rows,

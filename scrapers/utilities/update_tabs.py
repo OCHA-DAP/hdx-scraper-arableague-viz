@@ -42,14 +42,18 @@ def update_regional(outputs, regional_rows, regions_rows=tuple()):
         return
     if regions_rows:
         adm_header = regions_rows[1].index("#region+name")
+        rows_to_insert = (list(), list(), list())
         for row in regions_rows[2:]:
             if row[adm_header] == "ALL":
                 for i, hxltag in enumerate(regions_rows[1]):
                     if hxltag == "#region+name":
                         continue
-                    regional_rows[0].append(regions_rows[0][i])
-                    regional_rows[1].append(hxltag)
-                    regional_rows[2].append(row[i])
+                    rows_to_insert[0].append(regions_rows[0][i])
+                    rows_to_insert[1].append(hxltag)
+                    rows_to_insert[2].append(row[i])
+        regional_rows[0] = rows_to_insert[0] + regional_rows[0]
+        regional_rows[1] = rows_to_insert[1] + regional_rows[1]
+        regional_rows[2] = rows_to_insert[2] + regional_rows[2]
     update_tab(outputs, "regional", regional_rows)
 
 
