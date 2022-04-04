@@ -4,7 +4,7 @@ from hdx.location.country import Country
 
 logger = logging.getLogger(__name__)
 
-
+regions_headers = (("regionnames",), ("#region+name",))
 national_headers = (
     ("iso3", "countryname"),
     ("#country+code", "#country+name"),
@@ -27,9 +27,51 @@ def update_tab(outputs, name, data):
         output.update_tab(name, data)
 
 
-def update_regional(runner, names, outputs):
-    rows = runner.get_rows("regional", ("value",), names=names)
-    update_tab(outputs, "regional", rows)
+def get_regional_rows(runner, names, overrides=dict()):
+    return runner.get_rows("regional", ("value",), names=names, overrides=overrides)
+
+
+def get_regions_rows(runner, names, regions):
+    return runner.get_rows(
+        "regions", regions, regions_headers, (lambda adm: adm,), names=names
+    )
+
+
+def update_regional(outputs, regional_rows, regions_rows=tuple()):
+    if not regional_rows:
+        return
+    if regions_rows:
+        adm_header = regions_rows[1].index("#region+name")
+        for row in regions_rows[2:]:
+            if row[adm_header] == "ALL":
+                for i, hxltag in enumerate(regions_rows[1]):
+                    if hxltag == "#region+name":
+                        continue
+                    regional_rows[0].append(regions_rows[0][i])
+                    regional_rows[1].append(hxltag)
+                    regional_rows[2].append(row[i])
+    update_tab(outputs, "regional", regional_rows)
+
+
+def update_regions(
+    outputs, regions_rows, regional_rows=tuple(), additional_regional_headers=tuple()
+):
+    if not regions_rows:
+        return
+    regional_values = dict()
+    if regional_rows:
+        for i, header in enumerate(regional_rows[0]):
+            if header in additional_regional_headers:
+                regional_values[header] = regional_rows[2][i]
+    adm_header = regions_rows[1].index("#region+name")
+    for row in regions_rows[2:]:
+        if row[adm_header] == "regional":
+            for i, header in enumerate(regions_rows[0]):
+                value = regional_values.get(header)
+                if value is None:
+                    continue
+                row[i] = value
+    update_tab(outputs, "regions", regions_rows)
 
 
 def update_national(runner, names, countries, outputs):

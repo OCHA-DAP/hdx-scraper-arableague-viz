@@ -14,11 +14,12 @@ from .inform import Inform
 from .iom_dtm import IOMDTM
 from .ipc_old import IPC
 from .unhcr import UNHCR
+from .utilities.region_lookups import RegionLookups
 from .utilities.update_tabs import (
     update_national,
     update_regional,
     update_sources,
-    update_subnational,
+    update_subnational, get_regions_rows, update_regions, get_regional_rows,
 )
 from .vaccination_campaigns import VaccinationCampaigns
 from .who_covid import WHOCovid
@@ -50,9 +51,11 @@ def get_indicators(
         countries = countries_override
     else:
         countries = configuration["countries"]
+    hrp_countries = configuration["HRPs"]
     configuration["countries_fuzzy_try"] = countries
     downloader = retriever.downloader
     adminone = AdminOne(configuration)
+    RegionLookups.load(countries, hrp_countries)
     runner = Runner(
         countries,
         adminone,
@@ -149,15 +152,14 @@ def get_indicators(
         )
     )
 
-    regional_scrapers = Aggregator.get_scrapers(
-        configuration["aggregation_regional"],
+    regions_scrapers = Aggregator.get_scrapers(
+        configuration["aggregation_regions"],
         "national",
-        "regional",
-        countries,
+        "regions",
+        RegionLookups.iso3_to_region,
         runner,
     )
-    regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
-    regional_names.extend(configurable_scrapers["regional"])
+    regions_names = runner.add_customs(regions_scrapers, add_to_run=True)
 
     runner.run(
         prioritise_scrapers=(
@@ -167,8 +169,11 @@ def get_indicators(
         )
     )
 
-    if "regional" in tabs:
-        update_regional(runner, regional_names, outputs)
+
+    regional_names = configurable_scrapers["regional"]
+    regions_rows = get_regions_rows(
+        runner, regions_names, RegionLookups.regions
+    )
     if "national" in tabs:
         update_national(
             runner,
@@ -176,6 +181,20 @@ def get_indicators(
             countries,
             outputs,
         )
+    if "regions" in tabs:
+        regional_rows = get_regional_rows(runner, ())
+        additional_regional_headers = (
+            "NumCountriesInNeed",
+        )
+        update_regions(
+            outputs,
+            regions_rows,
+            regional_rows,
+            additional_regional_headers,
+        )
+    if "regional" in tabs:
+        regional_rows = get_regional_rows(runner, regional_names)
+        update_regional(outputs, regional_rows, regions_rows)
     if "subnational" in tabs:
         update_subnational(runner, subnational_names, adminone, outputs)
 
