@@ -109,12 +109,14 @@ def get_indicators(
         configuration["education_closures"],
         today,
         countries,
+        RegionLookups.iso3_to_region,
         downloader,
     )
     education_enrolment = EducationEnrolment(
         configuration["education_enrolment"],
         education_closures,
         countries,
+        RegionLookups.iso3_to_region,
         downloader,
     )
     national_names = configurable_scrapers["national"] + [

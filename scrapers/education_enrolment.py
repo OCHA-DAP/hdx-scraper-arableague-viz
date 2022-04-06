@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class EducationEnrolment(BaseScraper):
-    def __init__(self, datasetinfo, closures, countryiso3s, downloader):
+    def __init__(self, datasetinfo, closures, countryiso3s, iso3_to_region, downloader):
         super().__init__(
             "education_enrolment",
             datasetinfo,
@@ -25,7 +25,7 @@ class EducationEnrolment(BaseScraper):
                         "#affected+learners",
                     ),
                 ),
-                "regional": (
+                "regions": (
                     (
                         "No. affected learners",
                         "Percentage affected learners",
@@ -39,16 +39,14 @@ class EducationEnrolment(BaseScraper):
         )
         self.closures = closures
         self.countryiso3s = countryiso3s
+        self.iso3_to_region = iso3_to_region
         self.downloader = downloader
 
     def run(self) -> None:
         learners_headers, learners_iterator = read(self.downloader, self.datasetinfo)
         learners_012, learners_3, affected_learners = self.get_values("national")
-        affected_learners_total, percentage_affected_learners = self.get_values(
-            "regional"
-        )
-        affected_learners_total["value"] = 0
-        learners_total = 0
+        all_learners = dict()
+
         for row in learners_iterator:
             countryiso = row["ISO3"]
             if not countryiso or countryiso not in self.countryiso3s:
@@ -87,9 +85,25 @@ class EducationEnrolment(BaseScraper):
             elif l_3 is not None:
                 no_learners = l_3
             if no_learners is not None:
-                learners_total += no_learners
+                all_learners[countryiso] = no_learners
                 if countryiso in self.closures.fully_closed:
-                    affected_learners_total["value"] += no_learners
-        percentage_affected_learners["value"] = get_fraction_str(
-            affected_learners_total["value"], learners_total
-        )
+                    affected_learners[countryiso] = no_learners
+        affected_learners_total = self.get_values("regions")[0]
+        learners_total = dict()
+        for countryiso in all_learners:
+            country_learners = all_learners[countryiso]
+            country_affected_learners = affected_learners.get(countryiso)
+            for region in self.iso3_to_region[countryiso]:
+                learners_total[region] = (
+                    learners_total.get(region, 0) + country_learners
+                )
+                if country_affected_learners is not None:
+                    affected_learners_total[region] = (
+                        affected_learners_total.get(region, 0)
+                        + country_affected_learners
+                    )
+        percentage_affected_learners = self.get_values("regions")[1]
+        for region, no_learners in affected_learners_total.items():
+            percentage_affected_learners[region] = get_fraction_str(
+                no_learners, learners_total[region]
+            )

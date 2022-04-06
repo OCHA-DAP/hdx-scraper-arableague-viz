@@ -9,13 +9,15 @@ logger = logging.getLogger(__name__)
 
 
 class EducationClosures(BaseScraper):
-    def __init__(self, datasetinfo: Dict, today, countryiso3s, downloader):
+    def __init__(
+        self, datasetinfo: Dict, today, countryiso3s, iso3_to_region, downloader
+    ):
         super().__init__(
             "education_closures",
             datasetinfo,
             {
                 "national": (("School Closure",), ("#impact+type",)),
-                "regional": (
+                "regions": (
                     ("No. closed countries",),
                     ("#status+country+closed",),
                 ),
@@ -23,6 +25,7 @@ class EducationClosures(BaseScraper):
         )
         self.today = today
         self.countryiso3s = countryiso3s
+        self.iso3_to_region = iso3_to_region
         self.downloader = downloader
         self.fully_closed = None
 
@@ -39,7 +42,7 @@ class EducationClosures(BaseScraper):
     def run(self) -> None:
         closures_headers, closures_iterator = read(self.downloader, self.datasetinfo)
         closures = self.get_values("national")[0]
-        closed_countries = self.get_values("regional")[0]
+        closed_countries = self.get_values("regions")[0]
         country_dates = dict()
         for row in closures_iterator:
             countryiso = row["ISO"]
@@ -56,7 +59,10 @@ class EducationClosures(BaseScraper):
             country_dates[countryiso] = date
             closures[countryiso] = row["Status"]
         self.fully_closed = self.get_fully_closed(closures)
-        closed_countries["value"] = len(self.fully_closed)
+        for countryiso in closures:
+            for region in self.iso3_to_region[countryiso]:
+                if countryiso in self.fully_closed:
+                    closed_countries[region] = closed_countries.get(region, 0) + 1
 
     def run_after_fallbacks(self) -> None:
         self.fully_closed = self.get_fully_closed(self.get_values("national")[0])
