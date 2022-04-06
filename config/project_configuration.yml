@@ -1,7 +1,7 @@
 tabs:
-  regional: "RegionalData"
+  allregions: "AllRegionsData"
   regional_reqfund: "RegionalReqFund"
-  regions: "RegionsData"
+  regional: "RegionalData"
   national: "NationalData"
   subnational: "SubnationalData"
   covid_series: "CovidSeries"
@@ -725,7 +725,7 @@ education_enrolment:
   resource: "Enrollment data"
   format: "xlsx"
 
-regions:
+regional:
   dataset: "unocha-office-locations"
   format: "xlsx"
   iso3: "ISO3"
@@ -821,7 +821,7 @@ regions:
         - "#affected+ch+food+p3plus+num"
         - "#affected+food+ipc+p3plus+num"
 
-scraper_regional: {}
+scraper_allregions: {}
 #  inneed_numcountries:
 #    dataset: "interagency-response-plans"
 #    format: "csv"
