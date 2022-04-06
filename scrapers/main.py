@@ -58,7 +58,10 @@ def get_indicators(
     configuration["countries_fuzzy_try"] = countries
     downloader = retriever.downloader
     adminone = AdminOne(configuration)
-    RegionLookups.load(countries, hrp_countries)
+    regions_configuration = configuration["regions"]
+    RegionLookups.load(
+        regions_configuration, today, downloader, countries, hrp_countries
+    )
     runner = Runner(
         countries,
         adminone,
@@ -156,7 +159,7 @@ def get_indicators(
     )
 
     regions_scrapers = Aggregator.get_scrapers(
-        configuration["aggregation_regions"],
+        regions_configuration["aggregate"],
         "national",
         "regions",
         RegionLookups.iso3_to_region,

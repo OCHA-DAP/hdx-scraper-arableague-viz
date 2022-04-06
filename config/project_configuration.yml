@@ -382,6 +382,53 @@ scraper_national:
       - "#affected+tested+per1000"
       - "#affected+tested+avg+per1000"
       - "#affected+tested+positive+pct"
+  cadre_harmonise:
+    dataset: "cadre-harmonise"
+    format: "xlsx"
+    prefilter: "chtype == 'current'"
+    sort:
+      reverse: True
+      keys:
+        - "reference_year"
+        - "reference_code"
+    admin:
+      - "adm0_pcod3"
+    date:
+      - "reference_year"
+      - "reference_code"
+    date_type: "int"
+    filter_cols:
+      - "chtype"
+    input:
+      - "phase3"
+      - "phase4"
+      - "phase5"
+      - "phase35"
+      - "population"
+    transform:
+      "phase3": "get_numeric_if_possible(phase3)"
+      "phase4": "get_numeric_if_possible(phase4)"
+      "phase5": "get_numeric_if_possible(phase5)"
+      "phase35": "get_numeric_if_possible(phase35)"
+      "population": "get_numeric_if_possible(population)"
+    sum:
+      - formula: "phase3"
+      - formula: "phase4"
+      - formula: "phase5"
+      - formula: "phase35"
+      - formula: "population"
+    output:
+      - "FoodInsecurityCHP3"
+      - "FoodInsecurityCHP4"
+      - "FoodInsecurityCHP5"
+      - "FoodInsecurityCHP3+"
+      - "FoodInsecurityCHAnalysed"
+    output_hxl:
+      - "#affected+ch+food+p3+num"
+      - "#affected+ch+food+p4+num"
+      - "#affected+ch+food+p5+num"
+      - "#affected+ch+food+p3plus+num"
+      - "#affected+ch+food+analysed+num"
   access:
     source:
       "#access+visas+pct": "OCHA"
@@ -678,95 +725,101 @@ education_enrolment:
   resource: "Enrollment data"
   format: "xlsx"
 
-aggregation_regions:
-  "#population":
-    action: "sum"
-  "#affected+infected":
-    action: "sum"
-  "#affected+killed":
-    action: "sum"
-  "#affected+inneed":
-    action: "sum"
-  "#value+cbpf+funding+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gmempty+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gm0+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gm1+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gm2+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gm3+total+usd":
-    action: "sum"
-  "#value+cbpf+funding+gm4+total+usd":
-    action: "sum"
-  "#value+cerf+funding+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gmempty+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gm0+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gm1+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gm2+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gm3+total+usd":
-    action: "sum"
-  "#value+cerf+funding+gm4+total+usd":
-    action: "sum"
-  "#value+funding+hrp+required+usd":
-    output: "RequiredFunding"
-    action: "sum"
-  "#value+funding+hrp+total+usd":
-    output: "Funding"
-    action: "sum"
-  "#value+funding+hrp+pct":
-    output: "PercentFunded"
-    action: "eval"
-    formula: "get_fraction_str(#value+funding+hrp+total+usd, #value+funding+hrp+required+usd) if #value+funding+hrp+total+usd is not None and #value+funding+hrp+required+usd is not None else ''"
-  "#access+visas+pct":
-    action: "mean"
-  "#access+travel+pct":
-    action: "mean"
-  "#event+year+todate+num":
-    action: "sum"
-  "#activity+cerf+project+insecurity+pct":
-    action: "mean"
-  "#activity+cbpf+project+insecurity+pct":
-    action: "mean"
-  "#vaccination+postponed+num":
-    action: "sum"
-  "#capacity+doses+delivered+covax":
-    action: "sum"
-  "#capacity+doses+delivered+others":
-    action: "sum"
-  "#capacity+doses+delivered+total":
-    action: "sum"
-  "#capacity+doses+administered+total":
-    action: "sum"
-  "#affected+children+sam":
-    action: "sum"
-  "#capacity+doses+forecast+covax":
-    action: "sum"
-  "#value+financing+worldbank+approved":
-    action: "sum"
-  "#value+financing+gavi+earlyaccess+approved":
-    action: "sum"
-  "#value+financing+gavi+needs+approved":
-    action: "sum"
-  "#value+financing+gavi+earlyaccess+disbursed":
-    action: "sum"
-  "#value+financing+gavi+needs+disbursed":
-    action: "sum"
-  "#value+financing+approved":
-    action: "sum"
-  "#affected+food+ipc+p3plus+num":
-    output: "FoodInsecurityP3+"
-    action: "sum"
-    input:
-      - "#affected+ch+food+p3plus+num"
-      - "#affected+food+ipc+p3plus+num"
+regions:
+  dataset: "unocha-office-locations"
+  format: "xlsx"
+  iso3: "ISO3"
+  region: "Regional_office"
+
+  aggregate:
+    "#population":
+      action: "sum"
+    "#affected+infected":
+      action: "sum"
+    "#affected+killed":
+      action: "sum"
+    "#affected+inneed":
+      action: "sum"
+    "#value+cbpf+funding+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gmempty+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm0+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm1+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm2+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm3+total+usd":
+      action: "sum"
+    "#value+cbpf+funding+gm4+total+usd":
+      action: "sum"
+    "#value+cerf+funding+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gmempty+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm0+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm1+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm2+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm3+total+usd":
+      action: "sum"
+    "#value+cerf+funding+gm4+total+usd":
+      action: "sum"
+    "#value+funding+hrp+required+usd":
+      output: "RequiredFunding"
+      action: "sum"
+    "#value+funding+hrp+total+usd":
+      output: "Funding"
+      action: "sum"
+    "#value+funding+hrp+pct":
+      output: "PercentFunded"
+      action: "eval"
+      formula: "get_fraction_str(#value+funding+hrp+total+usd, #value+funding+hrp+required+usd) if #value+funding+hrp+total+usd is not None and #value+funding+hrp+required+usd is not None else ''"
+    "#access+visas+pct":
+      action: "mean"
+    "#access+travel+pct":
+      action: "mean"
+    "#event+year+todate+num":
+      action: "sum"
+    "#activity+cerf+project+insecurity+pct":
+      action: "mean"
+    "#activity+cbpf+project+insecurity+pct":
+      action: "mean"
+    "#vaccination+postponed+num":
+      action: "sum"
+    "#capacity+doses+delivered+covax":
+      action: "sum"
+    "#capacity+doses+delivered+others":
+      action: "sum"
+    "#capacity+doses+delivered+total":
+      action: "sum"
+    "#capacity+doses+administered+total":
+      action: "sum"
+    "#affected+children+sam":
+      action: "sum"
+    "#capacity+doses+forecast+covax":
+      action: "sum"
+    "#value+financing+worldbank+approved":
+      action: "sum"
+    "#value+financing+gavi+earlyaccess+approved":
+      action: "sum"
+    "#value+financing+gavi+needs+approved":
+      action: "sum"
+    "#value+financing+gavi+earlyaccess+disbursed":
+      action: "sum"
+    "#value+financing+gavi+needs+disbursed":
+      action: "sum"
+    "#value+financing+approved":
+      action: "sum"
+    "#affected+food+ipc+p3plus+num":
+      output: "FoodInsecurityP3+"
+      action: "sum"
+      input:
+        - "#affected+ch+food+p3plus+num"
+        - "#affected+food+ipc+p3plus+num"
 
 scraper_regional: {}
 #  inneed_numcountries:
@@ -810,6 +863,56 @@ scraper_subnational:
       - "Population"
     output_hxl:
       - "#population"
+  cadre_harmonise:
+    dataset: "cadre-harmonise"
+    format: "xlsx"
+    prefilter: "chtype == 'current'"
+    sort:
+      reverse: True
+      keys:
+        - "reference_year"
+        - "reference_code"
+    admin:
+      - "adm0_pcod3"
+      - - "adm1_pcod2"
+        - "adm1_pcod3"
+        - "adm1_name"
+    date:
+      - "reference_year"
+      - "reference_code"
+    date_type: "int"
+    filter_cols:
+      - "chtype"
+    input:
+      - "phase3"
+      - "phase4"
+      - "phase5"
+      - "phase35"
+      - "population"
+    transform:
+      "phase3": "get_numeric_if_possible(phase3)"
+      "phase4": "get_numeric_if_possible(phase4)"
+      "phase5": "get_numeric_if_possible(phase5)"
+      "phase35": "get_numeric_if_possible(phase35)"
+      "population": "get_numeric_if_possible(population)"
+    sum:
+      - formula: "phase3"
+      - formula: "phase4"
+      - formula: "phase5"
+      - formula: "phase35"
+      - formula: "population"
+    output:
+      - "FoodInsecurityCHP3"
+      - "FoodInsecurityCHP4"
+      - "FoodInsecurityCHP5"
+      - "FoodInsecurityCHP3+"
+      - "FoodInsecurityCHAnalysed"
+    output_hxl:
+      - "#affected+ch+food+p3+num"
+      - "#affected+ch+food+p4+num"
+      - "#affected+ch+food+p5+num"
+      - "#affected+ch+food+p3plus+num"
+      - "#affected+ch+food+analysed+num"
   healthfac:
     source: "HOT"
     url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vT-266S0iZDEvcQmxC2i7LNHWi4fUXtDkrwp8D6NMyHArxnegAYO9XXVnhuHaWvdxaoZTq7M6yGLaPX/pub?gid=1620744216&single=true&output=csv"
