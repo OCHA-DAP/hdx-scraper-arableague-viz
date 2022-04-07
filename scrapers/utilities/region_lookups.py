@@ -37,4 +37,3 @@ class RegionLookups:
         cls.regions.insert(0, region)
         for countryiso in countries:
             dict_of_sets_add(cls.iso3_to_region, countryiso, region)
-
