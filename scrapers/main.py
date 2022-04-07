@@ -18,8 +18,8 @@ from .utilities.region_lookups import RegionLookups
 from .utilities.update_tabs import (
     get_allregions_rows,
     get_regional_rows,
-    update_national,
     update_allregions,
+    update_national,
     update_regional,
     update_sources,
     update_subnational,
@@ -109,12 +109,14 @@ def get_indicators(
         configuration["education_closures"],
         today,
         countries,
+        RegionLookups.iso3_to_region,
         downloader,
     )
     education_enrolment = EducationEnrolment(
         configuration["education_enrolment"],
         education_closures,
         countries,
+        RegionLookups.iso3_to_region,
         downloader,
     )
     national_names = configurable_scrapers["national"] + [
@@ -166,6 +168,7 @@ def get_indicators(
         runner,
     )
     regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
+    regional_names.extend(["education_closures", "education_enrolment"])
 
     runner.run(
         prioritise_scrapers=(
@@ -174,9 +177,6 @@ def get_indicators(
             "population_allregions",
         )
     )
-
-    allregions_names = configurable_scrapers["allregions"]
-    allregions_names.extend(["education_closures", "education_enrolment"])
 
     regional_rows = get_regional_rows(runner, regional_names, RegionLookups.regions)
     if "national" in tabs:
@@ -196,6 +196,7 @@ def get_indicators(
             additional_allregions_headers,
         )
     if "allregions" in tabs:
+        allregions_names = configurable_scrapers["allregions"]
         allregions_rows = get_allregions_rows(runner, allregions_names)
         update_allregions(outputs, allregions_rows, regional_rows)
     if "subnational" in tabs:

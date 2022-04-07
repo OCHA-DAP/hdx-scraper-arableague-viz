@@ -4,7 +4,7 @@ from hdx.location.country import Country
 
 logger = logging.getLogger(__name__)
 
-regions_headers = (("regionnames",), ("#region+name",))
+regional_headers = (("regionnames",), ("#region+name",))
 national_headers = (
     ("iso3", "countryname"),
     ("#country+code", "#country+name"),
@@ -39,7 +39,7 @@ def get_regional_rows(runner, names, regional):
 
 def update_allregions(outputs, allregions_rows, regions_rows=tuple()):
     if not allregions_rows:
-        return
+        allregions_rows = [list(), list(), list()]
     if regions_rows:
         adm_header = regions_rows[1].index("#region+name")
         rows_to_insert = (list(), list(), list())
@@ -58,7 +58,10 @@ def update_allregions(outputs, allregions_rows, regions_rows=tuple()):
 
 
 def update_regional(
-    outputs, regional_rows, allregions_rows=tuple(), additional_allregions_headers=tuple()
+    outputs,
+    regional_rows,
+    allregions_rows=tuple(),
+    additional_allregions_headers=tuple(),
 ):
     if not regional_rows:
         return
