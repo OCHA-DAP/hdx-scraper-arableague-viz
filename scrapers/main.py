@@ -168,7 +168,7 @@ def get_indicators(
         runner,
     )
     regions_names = runner.add_customs(regions_scrapers, add_to_run=True)
-
+    regions_names.extend(["education_closures", "education_enrolment"])
     runner.run(
         prioritise_scrapers=(
             "population_national",
@@ -176,9 +176,6 @@ def get_indicators(
             "population_regional",
         )
     )
-
-    regional_names = configurable_scrapers["regional"]
-    regional_names.extend(["education_closures", "education_enrolment"])
 
     regions_rows = get_regions_rows(runner, regions_names, RegionLookups.regions)
     if "national" in tabs:
@@ -198,6 +195,7 @@ def get_indicators(
             additional_regional_headers,
         )
     if "regional" in tabs:
+        regional_names = configurable_scrapers["regional"]
         regional_rows = get_regional_rows(runner, regional_names)
         update_regional(outputs, regional_rows, regions_rows)
     if "subnational" in tabs:
