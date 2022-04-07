@@ -39,7 +39,7 @@ def get_regions_rows(runner, names, regions):
 
 def update_regional(outputs, regional_rows, regions_rows=tuple()):
     if not regional_rows:
-        return
+        regional_rows = [list(), list(), list()]
     if regions_rows:
         adm_header = regions_rows[1].index("#region+name")
         rows_to_insert = (list(), list(), list())
