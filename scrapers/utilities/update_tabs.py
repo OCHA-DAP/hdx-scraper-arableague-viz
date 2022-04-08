@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 regions_headers = (("regionnames",), ("#region+name",))
 national_headers = (
     ("iso3", "countryname"),
-    ("#country+code", "#country+name"),
+    ("#country+code", "#country+name", "#meta+ishrp", "#region+name"),
 )
 subnational_headers = (
     ("iso3", "countryname", "adm1_pcode", "adm1_name"),
@@ -78,10 +78,16 @@ def update_regions(
     update_tab(outputs, "regions", regions_rows)
 
 
-def update_national(runner, names, countries, outputs):
+def update_national(runner, names, iso3_to_region, hrp_countries, countries, outputs):
     name_fn = lambda adm: Country.get_country_name_from_iso3(adm)
+    ishrp_fn = lambda adm: "Y" if adm in hrp_countries else "N"
 
-    fns = (lambda adm: adm, name_fn)
+    def region_fn(adm):
+        regions = sorted(list(iso3_to_region[adm]))
+        regions.remove("ALL")
+        return "|".join(regions)
+
+    fns = (lambda adm: adm, name_fn, ishrp_fn, region_fn)
     rows = runner.get_rows("national", countries, national_headers, fns, names=names)
     update_tab(outputs, "national", rows)
 

@@ -182,6 +182,8 @@ def get_indicators(
         update_national(
             runner,
             national_names,
+            RegionLookups.iso3_to_region,
+            hrp_countries,
             countries,
             outputs,
         )
