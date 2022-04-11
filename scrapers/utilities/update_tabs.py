@@ -37,18 +37,18 @@ def get_regional_rows(runner, names, regional):
     )
 
 
-def update_allregions(outputs, allregions_rows, regions_rows=tuple()):
+def update_allregions(outputs, allregions_rows, regional_rows=tuple()):
     if not allregions_rows:
         allregions_rows = [list(), list(), list()]
-    if regions_rows:
-        adm_header = regions_rows[1].index("#region+name")
+    if regional_rows:
+        adm_header = regional_rows[1].index("#region+name")
         rows_to_insert = (list(), list(), list())
-        for row in regions_rows[2:]:
+        for row in regional_rows[2:]:
             if row[adm_header] == "ALL":
-                for i, hxltag in enumerate(regions_rows[1]):
+                for i, hxltag in enumerate(regional_rows[1]):
                     if hxltag == "#region+name":
                         continue
-                    rows_to_insert[0].append(regions_rows[0][i])
+                    rows_to_insert[0].append(regional_rows[0][i])
                     rows_to_insert[1].append(hxltag)
                     rows_to_insert[2].append(row[i])
         allregions_rows[0] = rows_to_insert[0] + allregions_rows[0]
