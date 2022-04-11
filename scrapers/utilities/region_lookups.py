@@ -12,12 +12,6 @@ class RegionLookups:
 
     @classmethod
     def load(cls, region_config, today, downloader, countries, hrp_countries):
-        cls.regions = ["ALL", "HRP"]
-        for countryiso in hrp_countries:
-            dict_of_sets_add(cls.iso3_to_region, countryiso, "HRP")
-        for countryiso in countries:
-            dict_of_sets_add(cls.iso3_to_region, countryiso, "ALL")
-
         _, iterator = read_hdx(downloader, region_config, today=today)
         regions = set()
         for row in iterator:

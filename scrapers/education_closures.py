@@ -17,7 +17,7 @@ class EducationClosures(BaseScraper):
             datasetinfo,
             {
                 "national": (("School Closure",), ("#impact+type",)),
-                "regional": (
+                "regions": (
                     ("No. closed countries",),
                     ("#status+country+closed",),
                 ),
@@ -42,7 +42,7 @@ class EducationClosures(BaseScraper):
     def run(self) -> None:
         closures_headers, closures_iterator = read(self.downloader, self.datasetinfo)
         closures = self.get_values("national")[0]
-        closed_countries = self.get_values("regional")[0]
+        closed_countries = self.get_values("regions")[0]
         country_dates = dict()
         for row in closures_iterator:
             countryiso = row["ISO"]
