@@ -88,7 +88,7 @@ class EducationEnrolment(BaseScraper):
                 all_learners[countryiso] = no_learners
                 if countryiso in self.closures.fully_closed:
                     affected_learners[countryiso] = no_learners
-        affected_learners_total = self.get_values("regions")[0]
+        affected_learners_total = self.get_values("regional")[0]
         learners_total = dict()
         for countryiso in all_learners:
             country_learners = all_learners[countryiso]
@@ -102,7 +102,7 @@ class EducationEnrolment(BaseScraper):
                         affected_learners_total.get(region, 0)
                         + country_affected_learners
                     )
-        percentage_affected_learners = self.get_values("regions")[1]
+        percentage_affected_learners = self.get_values("regional")[1]
         for region, no_learners in affected_learners_total.items():
             percentage_affected_learners[region] = get_fraction_str(
                 no_learners, learners_total[region]

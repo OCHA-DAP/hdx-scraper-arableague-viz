@@ -16,11 +16,11 @@ from .ipc_old import IPC
 from .unhcr import UNHCR
 from .utilities.region_lookups import RegionLookups
 from .utilities.update_tabs import (
+    get_allregions_rows,
     get_regional_rows,
-    get_regions_rows,
+    update_allregions,
     update_national,
     update_regional,
-    update_regions,
     update_sources,
     update_subnational,
 )
@@ -58,9 +58,9 @@ def get_indicators(
     configuration["countries_fuzzy_try"] = countries
     downloader = retriever.downloader
     adminone = AdminOne(configuration)
-    regions_configuration = configuration["regions"]
+    regional_configuration = configuration["regional"]
     RegionLookups.load(
-        regions_configuration, today, downloader, countries, hrp_countries
+        regional_configuration, today, downloader, countries, hrp_countries
     )
     runner = Runner(
         countries,
@@ -72,8 +72,8 @@ def get_indicators(
         scrapers_to_run=scrapers_to_run,
     )
     configurable_scrapers = dict()
-    for level_name in "national", "subnational", "regional":
-        if level_name == "regional":
+    for level_name in "national", "subnational", "allregions":
+        if level_name == "allregions":
             level = "single"
         else:
             level = level_name
@@ -160,24 +160,25 @@ def get_indicators(
         )
     )
 
-    regions_scrapers = Aggregator.get_scrapers(
-        regions_configuration["aggregate"],
+    regional_scrapers = Aggregator.get_scrapers(
+        regional_configuration["aggregate"],
         "national",
-        "regions",
+        "regional",
         RegionLookups.iso3_to_region,
         runner,
     )
-    regions_names = runner.add_customs(regions_scrapers, add_to_run=True)
-    regions_names.extend(["education_closures", "education_enrolment"])
+    regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
+    regional_names.extend(["education_closures", "education_enrolment"])
+
     runner.run(
         prioritise_scrapers=(
             "population_national",
             "population_subnational",
-            "population_regional",
+            "population_allregions",
         )
     )
 
-    regions_rows = get_regions_rows(runner, regions_names, RegionLookups.regions)
+    regional_rows = get_regional_rows(runner, regional_names, RegionLookups.regions)
     if "national" in tabs:
         update_national(
             runner,
@@ -187,19 +188,19 @@ def get_indicators(
             countries,
             outputs,
         )
-    if "regions" in tabs:
-        regional_rows = get_regional_rows(runner, ())
-        additional_regional_headers = ("NumCountriesInNeed",)
-        update_regions(
-            outputs,
-            regions_rows,
-            regional_rows,
-            additional_regional_headers,
-        )
     if "regional" in tabs:
-        regional_names = configurable_scrapers["regional"]
-        regional_rows = get_regional_rows(runner, regional_names)
-        update_regional(outputs, regional_rows, regions_rows)
+        allregions_rows = get_allregions_rows(runner, ())
+        additional_allregions_headers = ("NumCountriesInNeed",)
+        update_regional(
+            outputs,
+            regional_rows,
+            allregions_rows,
+            additional_allregions_headers,
+        )
+    if "allregions" in tabs:
+        allregions_names = configurable_scrapers["allregions"]
+        allregions_rows = get_allregions_rows(runner, allregions_names)
+        update_allregions(outputs, allregions_rows, regional_rows)
     if "subnational" in tabs:
         update_subnational(runner, subnational_names, adminone, outputs)
 

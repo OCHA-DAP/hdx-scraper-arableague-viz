@@ -4,7 +4,7 @@ from hdx.location.country import Country
 
 logger = logging.getLogger(__name__)
 
-regions_headers = (("regionnames",), ("#region+name",))
+regional_headers = (("regionnames",), ("#region+name",))
 national_headers = (
     ("iso3", "countryname"),
     ("#country+code", "#country+name", "#meta+ishrp", "#region+name"),
@@ -27,19 +27,19 @@ def update_tab(outputs, name, data):
         output.update_tab(name, data)
 
 
-def get_regional_rows(runner, names, overrides=dict()):
-    return runner.get_rows("regional", ("value",), names=names, overrides=overrides)
+def get_allregions_rows(runner, names, overrides=dict()):
+    return runner.get_rows("allregions", ("value",), names=names, overrides=overrides)
 
 
-def get_regions_rows(runner, names, regions):
+def get_regional_rows(runner, names, regional):
     return runner.get_rows(
-        "regions", regions, regions_headers, (lambda adm: adm,), names=names
+        "regional", regional, regional_headers, (lambda adm: adm,), names=names
     )
 
 
-def update_regional(outputs, regional_rows, regions_rows=tuple()):
-    if not regional_rows:
-        regional_rows = [list(), list(), list()]
+def update_allregions(outputs, allregions_rows, regions_rows=tuple()):
+    if not allregions_rows:
+        allregions_rows = [list(), list(), list()]
     if regions_rows:
         adm_header = regions_rows[1].index("#region+name")
         rows_to_insert = (list(), list(), list())
@@ -51,31 +51,34 @@ def update_regional(outputs, regional_rows, regions_rows=tuple()):
                     rows_to_insert[0].append(regions_rows[0][i])
                     rows_to_insert[1].append(hxltag)
                     rows_to_insert[2].append(row[i])
-        regional_rows[0] = rows_to_insert[0] + regional_rows[0]
-        regional_rows[1] = rows_to_insert[1] + regional_rows[1]
-        regional_rows[2] = rows_to_insert[2] + regional_rows[2]
-    update_tab(outputs, "regional", regional_rows)
+        allregions_rows[0] = rows_to_insert[0] + allregions_rows[0]
+        allregions_rows[1] = rows_to_insert[1] + allregions_rows[1]
+        allregions_rows[2] = rows_to_insert[2] + allregions_rows[2]
+    update_tab(outputs, "allregions", allregions_rows)
 
 
-def update_regions(
-    outputs, regions_rows, regional_rows=tuple(), additional_regional_headers=tuple()
+def update_regional(
+    outputs,
+    regional_rows,
+    allregions_rows=tuple(),
+    additional_allregions_headers=tuple(),
 ):
-    if not regions_rows:
+    if not regional_rows:
         return
-    regional_values = dict()
-    if regional_rows:
-        for i, header in enumerate(regional_rows[0]):
-            if header in additional_regional_headers:
-                regional_values[header] = regional_rows[2][i]
-    adm_header = regions_rows[1].index("#region+name")
-    for row in regions_rows[2:]:
-        if row[adm_header] == "regional":
-            for i, header in enumerate(regions_rows[0]):
-                value = regional_values.get(header)
+    allregions_values = dict()
+    if allregions_rows:
+        for i, header in enumerate(allregions_rows[0]):
+            if header in additional_allregions_headers:
+                allregions_values[header] = allregions_rows[2][i]
+    adm_header = regional_rows[1].index("#region+name")
+    for row in regional_rows[2:]:
+        if row[adm_header] == "allregions":
+            for i, header in enumerate(regional_rows[0]):
+                value = allregions_values.get(header)
                 if value is None:
                     continue
                 row[i] = value
-    update_tab(outputs, "regions", regions_rows)
+    update_tab(outputs, "regional", regional_rows)
 
 
 def update_national(runner, names, iso3_to_region, hrp_countries, countries, outputs):
