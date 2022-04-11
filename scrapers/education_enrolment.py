@@ -25,7 +25,7 @@ class EducationEnrolment(BaseScraper):
                         "#affected+learners",
                     ),
                 ),
-                "regions": (
+                "regional": (
                     (
                         "No. affected learners",
                         "Percentage affected learners",
