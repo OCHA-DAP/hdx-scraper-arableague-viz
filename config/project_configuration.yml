@@ -912,7 +912,7 @@ scraper_subnational:
       - "#affected+ch+food+p5+num"
       - "#affected+ch+food+p3plus+num"
       - "#affected+ch+food+analysed+num"
-  health_facilities:
+  healthfac:
     source: "HOT"
     dataset: "admin-1-health-facilities-for-data-explorers"
     format: "csv"
@@ -921,6 +921,8 @@ scraper_subnational:
       - "ADM1_PCODE"
     input:
       - "Health_Facilities"
+    transform:
+      "Health_Facilities": "get_numeric_if_possible(Health_Facilities)"
     output:
       - "NoHealthFacilities"
     output_hxl:
