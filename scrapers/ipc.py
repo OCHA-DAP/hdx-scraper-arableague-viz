@@ -76,13 +76,15 @@ class IPC(BaseScraper):
                     continue
                 countryisos.add((countryiso3, countryiso2))
             national_outputs = self.get_values("national")
-            national_populations = {phase: national_outputs[i] for i, phase in enumerate(self.phases)}
+            national_populations = {
+                phase: national_outputs[i] for i, phase in enumerate(self.phases)
+            }
             i = len(self.phases)
             national_populations["P3+"] = national_outputs[i]
-            national_analysed = national_outputs[i+1]
-            national_period = national_outputs[i+2]
-            national_start = national_outputs[i+3]
-            national_end = national_outputs[i+4]
+            national_analysed = national_outputs[i + 1]
+            national_period = national_outputs[i + 2]
+            national_start = national_outputs[i + 3]
+            national_end = national_outputs[i + 4]
             subnational_populations = self.get_values("subnational")[0]
             projection_names = ["Current", "First Projection", "Second Projection"]
             projection_mappings = ["", "_projected", "_second_projected"]
@@ -118,12 +120,16 @@ class IPC(BaseScraper):
                 areas = country_data.get("areas", country_data.get("groups"))
                 if areas:
                     for area in areas:
-                        pcode, _ = self.adminone.get_pcode(countryiso3, area["name"], "IPC")
+                        pcode, _ = self.adminone.get_pcode(
+                            countryiso3, area["name"], "IPC"
+                        )
                         if not pcode:
                             continue
                         sum = 0
                         for phase in self.phases:
-                            pop = area.get(f"phase{phase}_population{projection_mapping}")
+                            pop = area.get(
+                                f"phase{phase}_population{projection_mapping}"
+                            )
                             if pop:
                                 sum += pop
                         cur_sum = subnational_populations.get(pcode)
