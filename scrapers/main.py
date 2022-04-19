@@ -12,7 +12,7 @@ from .food_prices import FoodPrices
 from .fts import FTS
 from .inform import Inform
 from .iom_dtm import IOMDTM
-from .ipc_old import IPC
+from .ipc import IPC
 from .unhcr import UNHCR
 from .utilities.region_lookups import RegionLookups
 from .utilities.update_tabs import (
@@ -87,7 +87,7 @@ def get_indicators(
         outputs,
         countries,
     )
-    ipc = IPC(configuration["ipc"], today, countries, adminone, downloader)
+    ipc = IPC(configuration["ipc"], today, countries, adminone, other_auths)
 
     fts = FTS(configuration["fts"], today, outputs, countries, basic_auths)
     food_prices = FoodPrices(
