@@ -6,7 +6,7 @@ logger = logging.getLogger(__name__)
 
 regional_headers = (("regionnames",), ("#region+name",))
 national_headers = (
-    ("iso3", "countryname"),
+    ("iso3", "countryname", "ishrp", "region"),
     ("#country+code", "#country+name", "#meta+ishrp", "#region+name"),
 )
 subnational_headers = (
