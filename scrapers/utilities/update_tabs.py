@@ -92,7 +92,8 @@ def update_national(runner, names, iso3_to_region, hrp_countries, countries, out
 
     fns = (lambda adm: adm, name_fn, ishrp_fn, region_fn)
     rows = runner.get_rows("national", countries, national_headers, fns, names=names)
-    update_tab(outputs, "national", rows)
+    if rows:
+        update_tab(outputs, "national", rows)
 
 
 def update_subnational(runner, names, adminone, outputs):
