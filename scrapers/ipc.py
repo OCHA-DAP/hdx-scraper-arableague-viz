@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class IPC(BaseScraper):
-    def __init__(self, datasetinfo, today, gho_countries, adminone):
+    def __init__(self, datasetinfo, today, countryiso3s, adminone):
         self.phases = ["3", "4", "5"]
         self.projections = ["Current", "First Projection", "Second Projection"]
         p3plus_header = "FoodInsecurityIPCP3+"
@@ -36,7 +36,7 @@ class IPC(BaseScraper):
             },
         )
         self.today = today
-        self.gho_countries = gho_countries
+        self.countryiso3s = countryiso3s
         self.adminone = adminone
 
     def get_period(self, projections):
@@ -67,7 +67,7 @@ class IPC(BaseScraper):
         for analysis in json:
             countryiso2 = analysis["country"]
             countryiso3 = Country.get_iso3_from_iso2(countryiso2)
-            if countryiso3 not in self.gho_countries:
+            if countryiso3 not in self.countryiso3s:
                 continue
             countryisos.add((countryiso3, countryiso2))
         national_outputs = self.get_values("national")
