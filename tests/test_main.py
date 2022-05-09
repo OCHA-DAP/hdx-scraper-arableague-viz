@@ -14,7 +14,7 @@ from hdx.utilities.useragent import UserAgent
 from scrapers.main import get_indicators
 
 
-class TestArabState:
+class TestArabLeague:
     @pytest.fixture(scope="function")
     def configuration(self):
         UserAgent.set_global("test")
@@ -32,7 +32,7 @@ class TestArabState:
     def test_get_indicators(self, configuration, folder):
         with ErrorsOnExit() as errors_on_exit:
             with temp_dir(
-                "TestArabStateViz", delete_on_success=True, delete_on_failure=False
+                "TestArabLeagueViz", delete_on_success=True, delete_on_failure=False
             ) as temp_folder:
                 create_retrievers(
                     temp_folder,
