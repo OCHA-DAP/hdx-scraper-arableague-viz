@@ -405,6 +405,8 @@ scraper_national:
       - "phase5"
       - "phase35"
       - "population"
+    input_ignore_vals:
+      - "-"
     transform:
       "phase3": "get_numeric_if_possible(phase3)"
       "phase4": "get_numeric_if_possible(phase4)"
@@ -874,7 +876,7 @@ scraper_subnational:
     admin:
       - "adm0_pcod3"
       - - "adm1_pcod2"
-        - "adm1_pcod3"
+#        - "adm1_pcod3"
         - "adm1_name"
     date:
       - "reference_year"
@@ -888,6 +890,8 @@ scraper_subnational:
       - "phase5"
       - "phase35"
       - "population"
+    input_ignore_vals:
+      - "-"
     transform:
       "phase3": "get_numeric_if_possible(phase3)"
       "phase4": "get_numeric_if_possible(phase4)"
