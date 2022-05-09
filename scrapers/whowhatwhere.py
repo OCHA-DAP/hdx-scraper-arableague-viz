@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class WhoWhatWhere(BaseScraper):
-    def __init__(self, datasetinfo, today, adminone, downloader):
+    def __init__(self, datasetinfo, today, adminone):
         super().__init__(
             "whowhatwhere",
             datasetinfo,
@@ -18,11 +18,11 @@ class WhoWhatWhere(BaseScraper):
         )
         self.today = today
         self.adminone = adminone
-        self.downloader = downloader
 
     def run(self) -> None:
         threew_url = self.datasetinfo["url"]
-        headers, iterator = self.downloader.get_tabular_rows(
+        retriever = self.get_retriever()
+        headers, iterator = retriever.get_tabular_rows(
             threew_url, headers=1, dict_form=True, format="csv"
         )
         rows = list(iterator)
@@ -45,7 +45,12 @@ class WhoWhatWhere(BaseScraper):
                 )
                 continue
             try:
-                data = hxl.data(resource["url"]).cache()
+                filename = f"{countryiso3}_{resource['name']}"
+                file_type = f".{resource.get_file_type()}"
+                if not filename.endswith(file_type):
+                    filename = f"{filename}{file_type}"
+                path = retriever.download_file(resource["url"], filename=filename)
+                data = hxl.data(path, allow_local=True).cache()
                 data.display_tags
             except hxl.HXLException:
                 logger.warning(

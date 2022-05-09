@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class EducationEnrolment(BaseScraper):
-    def __init__(self, datasetinfo, closures, countryiso3s, iso3_to_region, downloader):
+    def __init__(self, datasetinfo, closures, countryiso3s, iso3_to_region):
         super().__init__(
             "education_enrolment",
             datasetinfo,
@@ -40,10 +40,12 @@ class EducationEnrolment(BaseScraper):
         self.closures = closures
         self.countryiso3s = countryiso3s
         self.iso3_to_region = iso3_to_region
-        self.downloader = downloader
 
     def run(self) -> None:
-        learners_headers, learners_iterator = read(self.downloader, self.datasetinfo)
+        learners_headers, learners_iterator = read(
+            self.get_retriever(),
+            self.datasetinfo,
+        )
         learners_012, learners_3, affected_learners = self.get_values("national")
         all_learners = dict()
 

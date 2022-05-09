@@ -53,7 +53,8 @@ class WHOCovid(BaseScraper):
         self.countries = countries
 
     def get_who_data(self, url):
-        df = pd.read_csv(url, keep_default_na=False)
+        path = self.get_retriever().download_file(url)
+        df = pd.read_csv(path, keep_default_na=False)
         df.columns = df.columns.str.strip()
         df = df[
             [
