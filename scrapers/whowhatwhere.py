@@ -5,6 +5,7 @@ from hdx.data.dataset import Dataset
 from hdx.data.hdxobject import HDXError
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_sets_add
+from hxl.input import _munge_url
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +50,8 @@ class WhoWhatWhere(BaseScraper):
                 file_type = f".{resource.get_file_type()}"
                 if not filename.endswith(file_type):
                     filename = f"{filename}{file_type}"
-                path = retriever.download_file(resource["url"], filename=filename)
+                url = _munge_url(resource["url"])
+                path = retriever.download_file(url, filename=filename)
                 data = hxl.data(path, allow_local=True).cache()
                 data.display_tags
             except hxl.HXLException:
