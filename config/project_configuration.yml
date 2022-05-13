@@ -1218,20 +1218,13 @@ admin1_info:
   - {country: Algeria, iso3: DZA, pcode: DZ046, name: Tissemsilt}
   - {country: Algeria, iso3: DZA, pcode: DZ047, name: Tizi Ouzou}
   - {country: Algeria, iso3: DZA, pcode: DZ048, name: Tlemcen}
-  - {country: Bahrain, iso3: BHR, pcode: BH01, name: Central Region}
-  - {country: Bahrain, iso3: BHR, pcode: BH02, name: Hamad Town}
-  - {country: Bahrain, iso3: BHR, pcode: BH03, name: Hawar Island}
-  - {country: Bahrain, iso3: BHR, pcode: BH05, name: Isa Town}
-  - {country: Bahrain, iso3: BHR, pcode: BH06, name: Jidhafs}
-  - {country: Bahrain, iso3: BHR, pcode: BH07, name: Manama}
-  - {country: Bahrain, iso3: BHR, pcode: BH08, name: Muharraq}
-  - {country: Bahrain, iso3: BHR, pcode: BH09, name: Northern Region}
-  - {country: Bahrain, iso3: BHR, pcode: BH10, name: Riffa}
-  - {country: Bahrain, iso3: BHR, pcode: BH11, name: Sitra}
-  - {country: Bahrain, iso3: BHR, pcode: BH12, name: Western Region}
-  - {country: Comoros, iso3: COM, pcode: KM1, name: Anjouan (Ndzouani)}
-  - {country: Comoros, iso3: COM, pcode: KM2, name: Grande Comore (Ngazidja)}
-  - {country: Comoros, iso3: COM, pcode: KM3, name: Moheli (Mwali)}
+  - {country: Bahrain, iso3: BHR, pcode: BH13, name: Capital}
+  - {country: Bahrain, iso3: BHR, pcode: BH15, name: Muharraq}
+  - {country: Bahrain, iso3: BHR, pcode: BH17, name: Northern}
+  - {country: Bahrain, iso3: BHR, pcode: BH14, name: Southern}
+  - {country: Comoros, iso3: COM, pcode: KM3, name: Mwali}
+  - {country: Comoros, iso3: COM, pcode: KM1, name: Ndzouani}
+  - {country: Comoros, iso3: COM, pcode: KM2, name: Ngazidja}
   - {country: Djibouti, iso3: DJI, pcode: DJ05, name: Ali Sabeh}
   - {country: Djibouti, iso3: DJI, pcode: DJ03, name: Dilkhil}
   - {country: Djibouti, iso3: DJI, pcode: DJ04, name: Djibouti}
@@ -1289,9 +1282,9 @@ admin1_info:
   - {country: Jordan, iso3: JOR, pcode: JO05, name: Irbid}
   - {country: Jordan, iso3: JOR, pcode: JO06, name: Jarash}
   - {country: Jordan, iso3: JOR, pcode: JO07, name: Karak}
-  - {country: Jordan, iso3: JOR, pcode: JO10, name: Maaan}
   - {country: Jordan, iso3: JOR, pcode: JO08, name: Madaba}
   - {country: Jordan, iso3: JOR, pcode: JO09, name: Mafraq}
+  - {country: Jordan, iso3: JOR, pcode: JO10, name: "Ma'an"}
   - {country: Jordan, iso3: JOR, pcode: JO11, name: Tafilah}
   - {country: Jordan, iso3: JOR, pcode: JO12, name: Zarqa}
   - {country: Kuwait, iso3: KWT, pcode: KW01, name: Al Ahmadi}
@@ -1383,8 +1376,8 @@ admin1_info:
   - {country: Somalia, iso3: SOM, pcode: SO14, name: Sool}
   - {country: Somalia, iso3: SOM, pcode: SO13, name: Togdheer}
   - {country: Somalia, iso3: SOM, pcode: SO12, name: Woqooyi Galbeed}
-  - {country: State of Palestine, iso3: PSE, pcode: PS02, name: Gaza Strip}
   - {country: State of Palestine, iso3: PSE, pcode: PS01, name: West Bank}
+  - {country: State of Palestine, iso3: PSE, pcode: PS02, name: Gaza Strip}
   - {country: Sudan, iso3: SDN, pcode: SD19, name: Abyei PCA}
   - {country: Sudan, iso3: SDN, pcode: SD15, name: Aj Jazirah}
   - {country: Sudan, iso3: SDN, pcode: SD08, name: Blue Nile}
@@ -1419,9 +1412,9 @@ admin1_info:
   - {country: Syrian Arab Republic, iso3: SYR, pcode: SY03, name: Rural Damascus}
   - {country: Syrian Arab Republic, iso3: SYR, pcode: SY10, name: Tartous}
   - {country: Tunisia, iso3: TUN, pcode: TN01, name: Ariana}
-  - {country: Tunisia, iso3: TUN, pcode: TN04, name: Beja}
-  - {country: Tunisia, iso3: TUN, pcode: TN02, name: Ben Arous (Tunis Sud)}
-  - {country: Tunisia, iso3: TUN, pcode: TN03, name: Bizerte}
+  - {country: Tunisia, iso3: TUN, pcode: TN02, name: Beja}
+  - {country: Tunisia, iso3: TUN, pcode: TN03, name: Ben Arous}
+  - {country: Tunisia, iso3: TUN, pcode: TN04, name: Bizerte}
   - {country: Tunisia, iso3: TUN, pcode: TN05, name: Gabes}
   - {country: Tunisia, iso3: TUN, pcode: TN06, name: Gafsa}
   - {country: Tunisia, iso3: TUN, pcode: TN07, name: Jendouba}
@@ -1429,10 +1422,10 @@ admin1_info:
   - {country: Tunisia, iso3: TUN, pcode: TN09, name: Kasserine}
   - {country: Tunisia, iso3: TUN, pcode: TN10, name: Kebili}
   - {country: Tunisia, iso3: TUN, pcode: TN11, name: Le Kef}
-  - {country: Tunisia, iso3: TUN, pcode: TN12, name: Mahdia}
-  - {country: Tunisia, iso3: TUN, pcode: TN13, name: Manubah}
-  - {country: Tunisia, iso3: TUN, pcode: TN15, name: Medenine}
-  - {country: Tunisia, iso3: TUN, pcode: TN14, name: Monastir}
+  - {country: Tunisia, iso3: TUN, pcode: TN13, name: Mahdia}
+  - {country: Tunisia, iso3: TUN, pcode: TN14, name: Manubah}
+  - {country: Tunisia, iso3: TUN, pcode: TN12, name: Medenine}
+  - {country: Tunisia, iso3: TUN, pcode: TN15, name: Monastir}
   - {country: Tunisia, iso3: TUN, pcode: TN16, name: Nabeul}
   - {country: Tunisia, iso3: TUN, pcode: TN17, name: Sfax}
   - {country: Tunisia, iso3: TUN, pcode: TN18, name: Sidi Bou Zid}
@@ -1442,14 +1435,13 @@ admin1_info:
   - {country: Tunisia, iso3: TUN, pcode: TN22, name: Tozeur}
   - {country: Tunisia, iso3: TUN, pcode: TN23, name: Tunis}
   - {country: Tunisia, iso3: TUN, pcode: TN24, name: Zaghouan}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE1, name: Abu Dhabi}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE2, name: Ajman}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE3, name: Al Fujarah/shariqah}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE4, name: Al Fujayrah}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE5, name: Dubai}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE6, name: Ras Al Khaymah}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE7, name: Shariqah}
-  - {country: United Arab Emirates, iso3: ARE, pcode: AE8, name: Umm Al Qaywayn}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3173, name: Abu Dhabi}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3174, name: Ajman}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3176, name: Al Fujayrah}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3177, name: Dubai}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3179, name: Ras Al Khaymah}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3180, name: Shariqah}
+  - {country: United Arab Emirates, iso3: ARE, pcode: AE3181, name: Umm Al Qaywayn}
   - {country: Yemen, iso3: YEM, pcode: YE12, name: Abyan}
   - {country: Yemen, iso3: YEM, pcode: YE30, name: Ad Dali}
   - {country: Yemen, iso3: YEM, pcode: YE24, name: Aden}
