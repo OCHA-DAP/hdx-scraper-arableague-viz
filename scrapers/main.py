@@ -3,6 +3,15 @@ import logging
 from hdx.location.adminone import AdminOne
 from hdx.location.country import Country
 from hdx.scraper.configurable.aggregator import Aggregator
+from hdx.scraper.outputs.update_tabs import (
+    get_regional_rows,
+    get_toplevel_rows,
+    update_national,
+    update_regional,
+    update_sources,
+    update_subnational,
+    update_toplevel,
+)
 from hdx.scraper.runner import Runner
 
 from .covax_deliveries import CovaxDeliveries
@@ -15,15 +24,6 @@ from .iom_dtm import IOMDTM
 from .ipc import IPC
 from .unhcr import UNHCR
 from .utilities.region_lookups import RegionLookups
-from .utilities.update_tabs import (
-    get_allregions_rows,
-    get_regional_rows,
-    update_allregions,
-    update_national,
-    update_regional,
-    update_sources,
-    update_subnational,
-)
 from .vaccination_campaigns import VaccinationCampaigns
 from .who_covid import WHOCovid
 from .whowhatwhere import WhoWhatWhere
@@ -163,31 +163,37 @@ def get_indicators(
         )
     )
 
-    regional_rows = get_regional_rows(runner, regional_names, RegionLookups.regions)
     if "national" in tabs:
+        flag_countries = {
+            "header": "ishrp",
+            "hxltag": "#meta+ishrp",
+            "countries": hrp_countries,
+        }
         update_national(
             runner,
-            national_names,
-            RegionLookups.iso3_to_region,
-            hrp_countries,
             countries,
             outputs,
+            names=national_names,
+            flag_countries=flag_countries,
+            iso3_to_region=RegionLookups.iso3_to_region,
+            ignore_regions=("ALL",),
         )
+    regional_rows = get_regional_rows(
+        runner,
+        RegionLookups.regions,
+        names=regional_names,
+    )
     if "regional" in tabs:
-        allregions_rows = get_allregions_rows(runner, ())
-        additional_allregions_headers = ("NumCountriesInNeed",)
         update_regional(
             outputs,
             regional_rows,
-            allregions_rows,
-            additional_allregions_headers,
         )
     if "allregions" in tabs:
         allregions_names = configurable_scrapers["allregions"]
-        allregions_rows = get_allregions_rows(runner, allregions_names)
-        update_allregions(outputs, allregions_rows, regional_rows)
+        allregions_rows = get_toplevel_rows(runner, names=allregions_names)
+        update_toplevel(outputs, allregions_rows, regional_rows=regional_rows)
     if "subnational" in tabs:
-        update_subnational(runner, subnational_names, adminone, outputs)
+        update_subnational(runner, adminone, outputs, names=subnational_names)
 
     adminone.output_matches()
     adminone.output_ignored()
