@@ -191,7 +191,9 @@ def get_indicators(
     if "allregions" in tabs:
         allregions_names = configurable_scrapers["allregions"]
         allregions_rows = get_toplevel_rows(runner, names=allregions_names)
-        update_toplevel(outputs, allregions_rows, regional_rows=regional_rows)
+        update_toplevel(
+            outputs, allregions_rows, regional_rows=regional_rows, regional_first=True
+        )
     if "subnational" in tabs:
         update_subnational(runner, adminone, outputs, names=subnational_names)
 
