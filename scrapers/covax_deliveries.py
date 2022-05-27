@@ -1,7 +1,6 @@
 import logging
 
 from hdx.scraper.base_scraper import BaseScraper
-from hdx.scraper.utilities.readers import read
 from hdx.utilities.dictandlist import dict_of_lists_add
 from hdx.utilities.text import get_numeric_if_possible
 
@@ -28,9 +27,7 @@ class CovaxDeliveries(BaseScraper):
         self.countryiso3s = countryiso3s
 
     def run(self) -> None:
-        headers, iterator = read(
-            self.get_retriever(), self.datasetinfo, today=self.today
-        )
+        headers, iterator = self.get_reader().read(self.datasetinfo)
         hxlrow = next(iterator)
         doses_lookup = dict()
         for row in iterator:

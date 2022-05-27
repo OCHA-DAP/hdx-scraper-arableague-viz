@@ -5,7 +5,6 @@ import numpy
 import pandas as pd
 from hdx.location.country import Country
 from hdx.scraper.base_scraper import BaseScraper
-from hdx.scraper.utilities.readers import read_hdx_metadata
 from hdx.utilities.text import number_format
 
 logger = logging.getLogger(__name__)
@@ -52,8 +51,8 @@ class WHOCovid(BaseScraper):
         self.outputs = outputs
         self.countries = countries
 
-    def get_who_data(self, url):
-        path = self.get_retriever().download_file(url)
+    def get_who_data(self, reader, url):
+        path = reader.download_file(url)
         df = pd.read_csv(path, keep_default_na=False)
         df.columns = df.columns.str.strip()
         df = df[
@@ -93,10 +92,13 @@ class WHOCovid(BaseScraper):
         return source_date, df_series, df
 
     def run(self) -> None:
-        read_hdx_metadata(self.datasetinfo, today=self.today)
+        reader = self.get_reader()
+        reader.read_hdx_metadata(self.datasetinfo)
 
         # get WHO data
-        source_date, df_series, df_WHO = self.get_who_data(self.datasetinfo["url"])
+        source_date, df_series, df_WHO = self.get_who_data(
+            reader, self.datasetinfo["url"]
+        )
         df_pop = pd.DataFrame.from_records(
             list(self.population_lookup.items()), columns=["Country Code", "population"]
         )
