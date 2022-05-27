@@ -1,7 +1,6 @@
 import logging
 
 from hdx.scraper.base_scraper import BaseScraper
-from hdx.scraper.utilities.readers import read_hdx
 from scrapers.utilities import calculate_ratios
 
 logger = logging.getLogger(__name__)
@@ -24,9 +23,7 @@ class VaccinationCampaigns(BaseScraper):
         self.outputs = outputs
 
     def run(self):
-        headers, iterator = read_hdx(
-            self.get_retriever(), self.datasetinfo, today=self.today
-        )
+        headers, iterator = self.get_reader().read_hdx(self.datasetinfo)
         hxlrow = next(iterator)
         campaigns_per_country = dict()
         affected_campaigns_per_country = self.get_values("national")[0]

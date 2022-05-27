@@ -55,7 +55,7 @@ def get_indicators(
     configuration["countries_fuzzy_try"] = countries
     adminone = AdminOne(configuration)
     regional_configuration = configuration["regional"]
-    RegionLookups.load(regional_configuration, today, countries, hrp_countries)
+    RegionLookups.load(regional_configuration, countries, hrp_countries)
     runner = Runner(
         countries,
         adminone,

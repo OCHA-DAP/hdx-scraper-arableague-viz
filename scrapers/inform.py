@@ -2,7 +2,6 @@ import logging
 
 from dateutil.relativedelta import relativedelta
 from hdx.scraper.base_scraper import BaseScraper
-from hdx.scraper.utilities.readers import read_hdx_metadata
 from hdx.utilities.dateparse import default_date, parse_date
 from hdx.utilities.dictandlist import dict_of_lists_add
 
@@ -107,12 +106,12 @@ class Inform(BaseScraper):
         return valuedicts, crisis_types, max_date
 
     def run(self) -> None:
-        read_hdx_metadata(self.datasetinfo)
+        reader = self.get_reader(self.name)
+        reader.read_hdx_metadata(self.datasetinfo)
         base_url = self.datasetinfo["url"]
-        retriever = self.get_retriever(self.name)
         start_date = self.today - relativedelta(months=1)
         valuedictsfortoday, crisis_types, max_date = self.get_latest_columns(
-            start_date, base_url, retriever
+            start_date, base_url, reader
         )
         severity_indices = [valuedictsfortoday[0]]
         not_found = set()
@@ -121,7 +120,7 @@ class Inform(BaseScraper):
             valuedictfordate = self.get_columns_by_date(
                 prevdate,
                 base_url,
-                retriever,
+                reader,
                 crisis_types,
                 not_found,
             )

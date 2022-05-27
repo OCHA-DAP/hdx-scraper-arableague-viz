@@ -2,7 +2,6 @@ import logging
 
 from dateutil.relativedelta import relativedelta
 from hdx.scraper.base_scraper import BaseScraper
-from hdx.scraper.utilities.readers import read_hdx_metadata
 from hdx.utilities.dictandlist import dict_of_lists_add
 from hdx.utilities.downloader import Download
 from hdx.utilities.retriever import Retrieve
@@ -22,10 +21,10 @@ class FoodPrices(BaseScraper):
         self.countryiso3s = countryiso3s
 
     def run(self) -> None:
-        read_hdx_metadata(self.datasetinfo, today=self.today)
+        token_reader = self.get_reader(self.name)
+        token_reader.read_hdx_metadata(self.datasetinfo)
         base_url = self.datasetinfo["base_url"]
-        token_retriever = self.get_retriever(self.name)
-        json = token_retriever.download_json(
+        json = token_reader.download_json(
             f"{base_url}/token",
             post=True,
             parameters={"grant_type": "client_credentials"},
@@ -36,7 +35,7 @@ class FoodPrices(BaseScraper):
             "Authorization": f"Bearer {access_token}",
         }
         downloader = Download(rate_limit={"calls": 1, "period": 0.1}, headers=headers)
-        retriever = Retrieve.clone(token_retriever, downloader)
+        retriever = Retrieve.clone(token_reader, downloader)
 
         def get_list(endpoint, countryiso3, startdate=None):
             all_data = list()

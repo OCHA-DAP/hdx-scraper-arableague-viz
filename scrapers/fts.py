@@ -197,14 +197,14 @@ class FTS(BaseScraper):
                 dict_of_lists_add(other_funding, iso3, None)
 
         base_url = self.datasetinfo["url"]
-        retriever = self.get_retriever(self.name)
+        reader = self.get_reader(self.name)
         curdate = self.today - relativedelta(months=1)
         url = f"{base_url}2/fts/flow/plan/overview/progress/{curdate.year}"
-        data = self.download_data(url, retriever)
+        data = self.download_data(url, reader)
         plans = data["plans"]
         plan_ids = ",".join([str(plan["id"]) for plan in plans])
         url = f"{base_url}1/fts/flow/custom-search?emergencyid=911&planid={plan_ids}&groupby=plan"
-        funding_data = self.download_data(url, retriever)
+        funding_data = self.download_data(url, reader)
         fundingtotals = funding_data["report3"]["fundingTotals"]
         fundingobjects = fundingtotals["objects"]
         reg_reqfund_output = [
@@ -261,7 +261,7 @@ class FTS(BaseScraper):
                         reg_reqfund_output.append([plan_name, allreq, allfund, allpct])
             else:
                 allreqs, allfunds = self.get_requirements_and_funding_location(
-                    base_url, plan, countryid_iso3mapping, retriever
+                    base_url, plan, countryid_iso3mapping, reader
                 )
                 plan_name = self.map_planname(plan_name)
                 reg_reqfund_output.append([plan_name, allreq, allfund, allpct])

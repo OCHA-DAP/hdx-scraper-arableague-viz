@@ -4,7 +4,6 @@ import hxl
 from hdx.data.dataset import Dataset
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
-from hdx.utilities.retriever import Retrieve
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +20,7 @@ class IOMDTM(BaseScraper):
 
     def run(self) -> None:
         iom_url = self.datasetinfo["url"]
-        headers, iterator = Retrieve.get_retriever().get_tabular_rows(
+        headers, iterator = self.get_reader().get_tabular_rows(
             iom_url, headers=1, dict_form=True, format="csv"
         )
         rows = list(iterator)
