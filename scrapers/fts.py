@@ -57,15 +57,15 @@ class FTS(BaseScraper):
         self.outputs = outputs
         self.countryiso3s = countryiso3s
 
-    def download(self, url, retriever):
-        json = retriever.download_json(url)
+    def download(self, url, reader):
+        json = reader.download_json(url)
         status = json["status"]
         if status != "ok":
             raise FTSException(f"{url} gives status {status}")
         return json
 
-    def download_data(self, url, retriever):
-        return self.download(url, retriever)["data"]
+    def download_data(self, url, reader):
+        return self.download(url, reader)["data"]
 
     def get_covid_funding(self, plan_id, plan_name, fundingobjects):
         if len(fundingobjects) != 0:
@@ -80,12 +80,12 @@ class FTS(BaseScraper):
         return None
 
     def get_requirements_and_funding_location(
-        self, base_url, plan, countryid_iso3mapping, retriever
+        self, base_url, plan, countryid_iso3mapping, reader
     ):
         allreqs, allfunds = dict(), dict()
         plan_id = plan["id"]
         url = f"{base_url}1/fts/flow/custom-search?planid={plan_id}&groupby=location"
-        data = self.download_data(url, retriever)
+        data = self.download_data(url, reader)
         requirements = data["requirements"]
         totalreq = requirements["totalRevisedReqs"]
         countryreq_is_totalreq = True
