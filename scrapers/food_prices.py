@@ -4,7 +4,6 @@ from dateutil.relativedelta import relativedelta
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
 from hdx.utilities.downloader import Download
-from hdx.utilities.retriever import Retrieve
 from hdx.utilities.text import number_format
 
 logger = logging.getLogger(__name__)
@@ -35,7 +34,7 @@ class FoodPrices(BaseScraper):
             "Authorization": f"Bearer {access_token}",
         }
         downloader = Download(rate_limit={"calls": 1, "period": 0.1}, headers=headers)
-        retriever = Retrieve.clone(token_reader, downloader)
+        reader = token_reader.clone(downloader)
 
         def get_list(endpoint, countryiso3, startdate=None):
             all_data = list()
@@ -53,7 +52,7 @@ class FoodPrices(BaseScraper):
                     if startdate:
                         parameters["startDate"] = startdate
                     try:
-                        json = retriever.download_json(
+                        json = reader.download_json(
                             url,
                             f"{filename}_{countryiso3}_{page}.json",
                             f"{filename} for {countryiso3} page {page}",

@@ -73,27 +73,19 @@ def get_indicators(
         configurable_scrapers[level_name] = runner.add_configurables(
             configuration[f"scraper{suffix}"], level, level_name, suffix=suffix
         )
-    who_covid = WHOCovid(
-        configuration["who_covid"],
-        today,
-        outputs,
-        countries,
-    )
+    who_covid = WHOCovid(configuration["who_covid"], outputs, countries)
     ipc = IPC(configuration["ipc"], today, countries, adminone)
 
     fts = FTS(configuration["fts"], today, outputs, countries)
     food_prices = FoodPrices(configuration["food_prices"], today, countries)
     vaccination_campaigns = VaccinationCampaigns(
         configuration["vaccination_campaigns"],
-        today,
         countries,
         outputs,
     )
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
-    covax_deliveries = CovaxDeliveries(
-        configuration["covax_deliveries"], today, countries
-    )
+    covax_deliveries = CovaxDeliveries(configuration["covax_deliveries"], countries)
     education_closures = EducationClosures(
         configuration["education_closures"],
         today,

@@ -14,7 +14,6 @@ class WHOCovid(BaseScraper):
     def __init__(
         self,
         datasetinfo,
-        today,
         outputs,
         countries,
     ):
@@ -47,7 +46,6 @@ class WHOCovid(BaseScraper):
                 "national": (tuple(national_headers), tuple(national_hxltags)),
             },
         )
-        self.today = today
         self.outputs = outputs
         self.countries = countries
 

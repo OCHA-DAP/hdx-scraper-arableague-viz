@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class CovaxDeliveries(BaseScraper):
-    def __init__(self, datasetinfo, today, countryiso3s):
+    def __init__(self, datasetinfo, countryiso3s):
         super().__init__(
             "covax_deliveries",
             datasetinfo,
@@ -23,7 +23,6 @@ class CovaxDeliveries(BaseScraper):
                 )
             },
         )
-        self.today = today
         self.countryiso3s = countryiso3s
 
     def run(self) -> None:

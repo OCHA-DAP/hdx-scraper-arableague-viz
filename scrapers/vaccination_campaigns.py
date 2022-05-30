@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 class VaccinationCampaigns(BaseScraper):
-    def __init__(self, datasetinfo, today, countryiso3s, outputs):
+    def __init__(self, datasetinfo, countryiso3s, outputs):
         super().__init__(
             "vaccination_campaigns",
             datasetinfo,
@@ -18,7 +18,6 @@ class VaccinationCampaigns(BaseScraper):
                 )
             },
         )
-        self.today = today
         self.countryiso3s = countryiso3s
         self.outputs = outputs
 
