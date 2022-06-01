@@ -1,7 +1,6 @@
 import logging
 
 import hxl
-from hdx.data.dataset import Dataset
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
 
@@ -20,17 +19,20 @@ class IOMDTM(BaseScraper):
 
     def run(self) -> None:
         iom_url = self.datasetinfo["url"]
-        headers, iterator = self.get_reader().get_tabular_rows(
+        reader = self.get_reader()
+        headers, iterator = reader.get_tabular_rows(
             iom_url, headers=1, dict_form=True, format="csv"
         )
         rows = list(iterator)
         idpsdict = dict()
         for ds_row in rows:
             countryiso3 = ds_row["Country ISO"]
-            dataset = Dataset.read_from_hdx(ds_row["Dataset Name"])
-            if not dataset:
-                logger.warning(f"No IOM DTM data for {countryiso3}.")
-                continue
+            dataset_name = ds_row["Dataset Name"]
+            if dataset_name:
+                dataset = reader.read_dataset(dataset_name)
+                if not dataset:
+                    logger.warning(f"No IOM DTM data for {countryiso3}.")
+                    continue
             url = dataset.get_resource()["url"]
             try:
                 data = hxl.data(url).cache()
