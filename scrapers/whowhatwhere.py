@@ -44,23 +44,9 @@ class WhoWhatWhere(BaseScraper):
                     f"Could not download resource data for {countryiso3}. Check dataset name."
                 )
                 continue
-            try:
-                filename = f"{countryiso3}_{resource['name']}"
-                file_type = f".{resource.get_file_type()}"
-                if not filename.endswith(file_type):
-                    filename = f"{filename}{file_type}"
-                url = _munge_url(resource["url"])
-                path = reader.download_file(url, filename=filename)
-                data = hxl.data(path, allow_local=True).cache()
-                data.display_tags
-            except hxl.HXLException:
-                logger.warning(
-                    f"Could not process 3w data for {countryiso3}. Maybe there are no HXL tags."
-                )
+            data = reader.read_hxl_resource(countryiso3, resource, "3w data")
+            if data is None:
                 continue
-            except Exception:
-                logger.exception(f"Error reading 3w data for {countryiso3}!")
-                raise
             self.source_urls.add(dataset.get_hdx_url())
             pcodes_found = False
             for row in data:

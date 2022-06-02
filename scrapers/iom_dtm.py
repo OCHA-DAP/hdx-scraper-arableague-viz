@@ -3,6 +3,7 @@ import logging
 import hxl
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
+from hxl.input import _munge_url
 
 logger = logging.getLogger(__name__)
 
@@ -33,14 +34,9 @@ class IOMDTM(BaseScraper):
                 if not dataset:
                     logger.warning(f"No IOM DTM data for {countryiso3}.")
                     continue
-            url = dataset.get_resource()["url"]
-            try:
-                data = hxl.data(url).cache()
-                data.display_tags
-            except hxl.HXLException:
-                logger.warning(
-                    f"Could not process IOM DTM data for {countryiso3}. Maybe there are no HXL tags."
-                )
+            resource = dataset.get_resource()
+            data = reader.read_hxl_resource(countryiso3, resource, "IOM DTM data")
+            if data is None:
                 continue
             pcodes_found = False
             for row in data:
