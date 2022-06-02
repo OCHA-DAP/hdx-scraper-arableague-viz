@@ -1,9 +1,7 @@
 import logging
 
-import hxl
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
-from hxl.input import _munge_url
 
 logger = logging.getLogger(__name__)
 
