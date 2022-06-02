@@ -27,49 +27,51 @@ class IOMDTM(BaseScraper):
         for ds_row in rows:
             countryiso3 = ds_row["Country ISO"]
             dataset_name = ds_row["Dataset Name"]
-            if dataset_name:
-                dataset = reader.read_dataset(dataset_name)
-                if not dataset:
-                    logger.warning(f"No IOM DTM data for {countryiso3}.")
-                    continue
-                resource = dataset.get_resource()
-                data = reader.read_hxl_resource(countryiso3, resource, "IOM DTM data")
-                if data is None:
-                    continue
-                pcodes_found = False
-                for row in data:
-                    pcode = row.get("#adm1+code")
-                    if pcode:
-                        pcode = self.adminone.convert_pcode_length(
-                            countryiso3, pcode, "iom_dtm"
+            if not dataset_name:
+                logger.warning(f"No IOM DTM data for {countryiso3}.")
+                continue
+            dataset = reader.read_dataset(dataset_name)
+            if not dataset:
+                logger.warning(f"No IOM DTM data for {countryiso3}.")
+                continue
+            resource = dataset.get_resource()
+            data = reader.read_hxl_resource(countryiso3, resource, "IOM DTM data")
+            if data is None:
+                continue
+            pcodes_found = False
+            for row in data:
+                pcode = row.get("#adm1+code")
+                if pcode:
+                    pcode = self.adminone.convert_pcode_length(
+                        countryiso3, pcode, "iom_dtm"
+                    )
+                else:
+                    adm2code = row.get("#adm2+code")
+                    if adm2code:
+                        if len(adm2code) > 4:
+                            pcode = adm2code[:-2]
+                        else:  # incorrectly labelled adm2 code
+                            pcode = adm2code
+                if not pcode:
+                    adm1name = row.get("#adm1+name")
+                    if adm1name:
+                        pcode, _ = self.adminone.get_pcode(
+                            countryiso3, adm1name, "iom_dtm"
                         )
-                    else:
-                        adm2code = row.get("#adm2+code")
-                        if adm2code:
-                            if len(adm2code) > 4:
-                                pcode = adm2code[:-2]
-                            else:  # incorrectly labelled adm2 code
-                                pcode = adm2code
-                    if not pcode:
-                        adm1name = row.get("#adm1+name")
-                        if adm1name:
-                            pcode, _ = self.adminone.get_pcode(
-                                countryiso3, adm1name, "iom_dtm"
-                            )
-                    if not pcode:
-                        location = row.get("#loc")
-                        if location:
-                            location = location.split(">")[-1]
-                            pcode, _ = self.adminone.get_pcode(
-                                countryiso3, location, "iom_dtm"
-                            )
-                    if pcode:
-                        pcode = pcode.strip().upper()
-                        idps = row.get("#affected+idps+ind")
-                        if idps:
-                            dict_of_lists_add(idpsdict, f"{countryiso3}:{pcode}", idps)
-                if not pcodes_found:
-                    logger.warning(f"No pcodes found for {countryiso3}.")
+                if not pcode:
+                    location = row.get("#loc")
+                    if location:
+                        location = location.split(">")[-1]
+                        pcode, _ = self.adminone.get_pcode(
+                            countryiso3, location, "iom_dtm"
+                        )
+                if pcode:
+                    pcode = pcode.strip().upper()
+                    idps = row.get("#affected+idps+ind")
+                    if idps:
+                        dict_of_lists_add(idpsdict, f"{countryiso3}:{pcode}", idps)
+            if not pcodes_found:
+                logger.warning(f"No pcodes found for {countryiso3}.")
 
         idps = self.get_values("subnational")[0]
         for countrypcode in idpsdict:
