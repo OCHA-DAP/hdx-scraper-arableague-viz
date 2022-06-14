@@ -13,6 +13,7 @@ from hdx.scraper.outputs.update_tabs import (
     update_toplevel,
 )
 from hdx.scraper.runner import Runner
+from hdx.scraper.utilities.region_lookup import RegionLookup
 
 from .covax_deliveries import CovaxDeliveries
 from .education_closures import EducationClosures
@@ -23,7 +24,6 @@ from .inform import Inform
 from .iom_dtm import IOMDTM
 from .ipc import IPC
 from .unhcr import UNHCR
-from .utilities.region_lookups import RegionLookups
 from .vaccination_campaigns import VaccinationCampaigns
 from .who_covid import WHOCovid
 from .whowhatwhere import WhoWhatWhere
@@ -55,7 +55,7 @@ def get_indicators(
     configuration["countries_fuzzy_try"] = countries
     adminone = AdminOne(configuration)
     regional_configuration = configuration["regional"]
-    RegionLookups.load(regional_configuration, countries, hrp_countries)
+    RegionLookup.load(regional_configuration, countries, {"HRPs": hrp_countries})
     runner = Runner(
         countries,
         adminone,
@@ -90,13 +90,13 @@ def get_indicators(
         configuration["education_closures"],
         today,
         countries,
-        RegionLookups.iso3_to_region,
+        RegionLookup.iso3_to_regions["ALL"],
     )
     education_enrolment = EducationEnrolment(
         configuration["education_enrolment"],
         education_closures,
         countries,
-        RegionLookups.iso3_to_region,
+        RegionLookup.iso3_to_regions["ALL"],
     )
     national_names = configurable_scrapers["national"] + [
         "food_prices",
@@ -141,7 +141,7 @@ def get_indicators(
         regional_configuration["aggregate"],
         "national",
         "regional",
-        RegionLookups.iso3_to_region,
+        RegionLookup.iso3_to_regions["ALL"],
         runner,
     )
     regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
@@ -167,12 +167,12 @@ def get_indicators(
             outputs,
             names=national_names,
             flag_countries=flag_countries,
-            iso3_to_region=RegionLookups.iso3_to_region,
+            iso3_to_region=RegionLookup.iso3_to_regions["ALL"],
             ignore_regions=("ALL",),
         )
     regional_rows = get_regional_rows(
         runner,
-        RegionLookups.regions,
+        RegionLookup.regions,
         names=regional_names,
     )
     if "regional" in tabs:
