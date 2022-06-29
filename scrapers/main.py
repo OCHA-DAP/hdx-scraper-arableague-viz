@@ -184,7 +184,10 @@ def get_indicators(
         allregions_names = configurable_scrapers["allregions"]
         allregions_rows = get_toplevel_rows(runner, names=allregions_names)
         update_toplevel(
-            outputs, allregions_rows, regional_rows=regional_rows, regional_first=True
+            outputs,
+            allregions_rows,
+            regional_rows=regional_rows,
+            regional_first=True,
         )
     if "subnational" in tabs:
         update_subnational(runner, adminone, outputs, names=subnational_names)
@@ -194,5 +197,9 @@ def get_indicators(
     adminone.output_errors()
 
     if "sources" in tabs:
-        update_sources(runner, configuration, outputs)
+        update_sources(
+            runner,
+            outputs,
+            additional_sources=configuration["additional_sources"],
+        )
     return countries
