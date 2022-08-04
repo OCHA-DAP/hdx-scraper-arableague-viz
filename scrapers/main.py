@@ -2,7 +2,6 @@ import logging
 
 from hdx.location.adminone import AdminOne
 from hdx.location.country import Country
-from hdx.scraper.configurable.aggregator import Aggregator
 from hdx.scraper.outputs.update_tabs import (
     get_regional_rows,
     get_toplevel_rows,
@@ -137,14 +136,14 @@ def get_indicators(
         )
     )
 
-    regional_scrapers = Aggregator.get_scrapers(
+    regional_names = runner.add_aggregators(
+        True,
         regional_configuration["aggregate"],
         "national",
         "regional",
         RegionLookup.iso3_to_regions["ALL"],
-        runner,
+        force_add_to_run=True,
     )
-    regional_names = runner.add_customs(regional_scrapers, add_to_run=True)
     regional_names.extend(["education_closures", "education_enrolment"])
 
     runner.run(
