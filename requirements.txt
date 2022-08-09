@@ -1,1 +1,1 @@
-hdx-python-scraper[pandas]==1.8.7
+hdx-python-scraper[pandas]==1.8.8
