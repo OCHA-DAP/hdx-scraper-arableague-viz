@@ -67,10 +67,10 @@ class WhoWhatWhere(BaseScraper):
                         pcode, _ = self.adminone.get_pcode(countryiso3, location, "3W")
                 if pcode:
                     pcode = pcode.strip().upper()
-                    if pcode not in self.adminone.pcodes and len(
+                    if pcode not in self.adminone.get_pcode_list() and len(
                         pcode
-                    ) != self.adminone.pcode_lengths.get(countryiso3):
-                        pcode = self.adminone.convert_pcode_length(
+                    ) != self.adminone.get_pcode_length(countryiso3):
+                        pcode = self.adminone.convert_admin1_pcode_length(
                             countryiso3, pcode, "whowhatwhere"
                         )
                     org = row.get("#org")

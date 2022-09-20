@@ -42,9 +42,11 @@ class IOMDTM(BaseScraper):
             for row in data:
                 pcode = row.get("#adm1+code")
                 if pcode:
-                    pcode = self.adminone.convert_pcode_length(
-                        countryiso3, pcode, "iom_dtm"
+                    pcode, exact = self.adminone.get_pcode(
+                        countryiso3, pcode, fuzzy_match=False
                     )
+                    if not exact:
+                        pcode = None
                 else:
                     adm2code = row.get("#adm2+code")
                     if adm2code:

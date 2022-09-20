@@ -1,6 +1,6 @@
 import logging
 
-from hdx.location.adminone import AdminOne
+from hdx.location.adminlevel import AdminLevel
 from hdx.location.country import Country
 from hdx.scraper.outputs.update_tabs import (
     get_regional_rows,
@@ -52,12 +52,11 @@ def get_indicators(
         countries = configuration["countries"]
     hrp_countries = configuration["HRPs"]
     configuration["countries_fuzzy_try"] = countries
-    adminone = AdminOne(configuration)
+    adminlevel = AdminLevel(configuration)
     regional_configuration = configuration["regional"]
     RegionLookup.load(regional_configuration, countries, {"HRPs": hrp_countries})
     runner = Runner(
         countries,
-        adminone,
         today,
         errors_on_exit=errors_on_exit,
         scrapers_to_run=scrapers_to_run,
@@ -70,10 +69,14 @@ def get_indicators(
             level = level_name
         suffix = f"_{level_name}"
         configurable_scrapers[level_name] = runner.add_configurables(
-            configuration[f"scraper{suffix}"], level, level_name, suffix=suffix
+            configuration[f"scraper{suffix}"],
+            level,
+            adminlevel=adminlevel,
+            level_name=level_name,
+            suffix=suffix,
         )
     who_covid = WHOCovid(configuration["who_covid"], outputs, countries)
-    ipc = IPC(configuration["ipc"], today, countries, adminone)
+    ipc = IPC(configuration["ipc"], today, countries, adminlevel)
 
     fts = FTS(configuration["fts"], today, outputs, countries)
     food_prices = FoodPrices(configuration["food_prices"], today, countries)
@@ -110,8 +113,8 @@ def get_indicators(
     ]
     national_names.insert(1, "who_covid")
 
-    whowhatwhere = WhoWhatWhere(configuration["whowhatwhere"], today, adminone)
-    iomdtm = IOMDTM(configuration["iom_dtm"], today, adminone)
+    whowhatwhere = WhoWhatWhere(configuration["whowhatwhere"], today, adminlevel)
+    iomdtm = IOMDTM(configuration["iom_dtm"], today, adminlevel)
 
     subnational_names = configurable_scrapers["subnational"] + [
         "whowhatwhere",
@@ -189,11 +192,11 @@ def get_indicators(
             regional_first=True,
         )
     if "subnational" in tabs:
-        update_subnational(runner, adminone, outputs, names=subnational_names)
+        update_subnational(runner, adminlevel, outputs, names=subnational_names)
 
-    adminone.output_matches()
-    adminone.output_ignored()
-    adminone.output_errors()
+    adminlevel.output_matches()
+    adminlevel.output_ignored()
+    adminlevel.output_errors()
 
     if "sources" in tabs:
         update_sources(

@@ -1162,7 +1162,7 @@ country_name_overrides:
 
 country_name_mappings:
 
-admin1_info:
+admin_info:
   - {country: Algeria, iso3: DZA, pcode: DZ001, name: Adrar}
   - {country: Algeria, iso3: DZA, pcode: DZ002, name: Ain Defla}
   - {country: Algeria, iso3: DZA, pcode: DZ003, name: Ain Temouchent}
@@ -1458,7 +1458,7 @@ admin1_info:
   - {country: Yemen, iso3: YEM, pcode: YE32, name: Socotra}
   - {country: Yemen, iso3: YEM, pcode: YE15, name: Taiz}
 
-admin1_name_mappings:
+admin_name_mappings:
   "MUTHANA": "IQG03"
   "Hasaka": "SY08"
   "Hassake": "SY08"
@@ -1488,7 +1488,7 @@ admin1_name_mappings:
   "AlWousta": "OM06"
   "Djibouti Ville": "DJ04"
 
-admin1_name_replacements:
+admin_name_replacements:
   " urban": ""
   "sud": "south"
   "ouest": "west"
@@ -1499,7 +1499,7 @@ admin1_name_replacements:
   ".": " "
   " region": ""
 
-admin1_fuzzy_dont:
+admin_fuzzy_dont:
   - "nord"
   - "north"
   - "sud"
