@@ -2,17 +2,10 @@ import logging
 
 from hdx.location.adminlevel import AdminLevel
 from hdx.location.country import Country
-from hdx.scraper.outputs.update_tabs import (
-    get_regional_rows,
-    get_toplevel_rows,
-    update_national,
-    update_regional,
-    update_sources,
-    update_subnational,
-    update_toplevel,
-)
 from hdx.scraper.runner import Runner
 from hdx.scraper.utilities.region_lookup import RegionLookup
+from hdx.scraper.utilities.sources import Sources
+from hdx.scraper.utilities.writer import Writer
 
 from .covax_deliveries import CovaxDeliveries
 from .education_closures import EducationClosures
@@ -55,6 +48,7 @@ def get_indicators(
     adminlevel = AdminLevel(configuration)
     regional_configuration = configuration["regional"]
     RegionLookup.load(regional_configuration, countries, {"HRPs": hrp_countries})
+    Sources.set_default_source_date_format("%Y-%m-%d")
     runner = Runner(
         countries,
         today,
@@ -157,51 +151,45 @@ def get_indicators(
         )
     )
 
+    writer = Writer(runner, outputs)
     if "national" in tabs:
         flag_countries = {
             "header": "ishrp",
             "hxltag": "#meta+ishrp",
             "countries": hrp_countries,
         }
-        update_national(
-            runner,
+        writer.update_national(
             countries,
-            outputs,
             names=national_names,
             flag_countries=flag_countries,
             iso3_to_region=RegionLookup.iso3_to_regions["ALL"],
             ignore_regions=("ALL",),
         )
-    regional_rows = get_regional_rows(
-        runner,
+    regional_rows = writer.get_regional_rows(
         RegionLookup.regions,
         names=regional_names,
     )
     if "regional" in tabs:
-        update_regional(
-            outputs,
+        writer.update_regional(
             regional_rows,
         )
     if "allregions" in tabs:
         allregions_names = configurable_scrapers["allregions"]
-        allregions_rows = get_toplevel_rows(runner, names=allregions_names)
-        update_toplevel(
-            outputs,
+        allregions_rows = writer.get_toplevel_rows(names=allregions_names)
+        writer.update_toplevel(
             allregions_rows,
             regional_rows=regional_rows,
             regional_first=True,
         )
     if "subnational" in tabs:
-        update_subnational(runner, adminlevel, outputs, names=subnational_names)
+        writer.update_subnational(adminlevel, names=subnational_names)
 
     adminlevel.output_matches()
     adminlevel.output_ignored()
     adminlevel.output_errors()
 
     if "sources" in tabs:
-        update_sources(
-            runner,
-            outputs,
+        writer.update_sources(
             additional_sources=configuration["additional_sources"],
         )
     return countries
