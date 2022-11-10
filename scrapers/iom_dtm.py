@@ -1,5 +1,7 @@
 import logging
 
+import hxl
+from hdx.data.dataset import Dataset
 from hdx.scraper.base_scraper import BaseScraper
 from hdx.utilities.dictandlist import dict_of_lists_add
 
@@ -72,13 +74,14 @@ class IOMDTM(BaseScraper):
                     idps = row.get("#affected+idps+ind")
                     if idps:
                         dict_of_lists_add(idpsdict, f"{countryiso3}:{pcode}", idps)
+                    pcodes_found = True
             if not pcodes_found:
                 logger.warning(f"No pcodes found for {countryiso3}.")
 
         idps = self.get_values("subnational")[0]
         for countrypcode in idpsdict:
             countryiso3, pcode = countrypcode.split(":")
-            if pcode not in self.adminone.pcodes:
+            if pcode not in self.adminone.get_pcode_list():
                 logger.error(f"PCode {pcode} in {countryiso3} does not exist!")
             else:
                 idps[pcode] = sum(idpsdict[countrypcode])
