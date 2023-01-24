@@ -1,1 +1,1 @@
-hdx-python-scraper[pandas]==2.1.0
+hdx-python-scraper[pandas]==2.1.1
