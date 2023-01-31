@@ -1,8 +1,10 @@
 import logging
+from os.path import join
 
 from hdx.location.adminlevel import AdminLevel
 from hdx.location.country import Country
 from hdx.scraper.runner import Runner
+from hdx.scraper.utilities.fallbacks import Fallbacks
 from hdx.scraper.utilities.region_lookup import RegionLookup
 from hdx.scraper.utilities.sources import Sources
 from hdx.scraper.utilities.writer import Writer
@@ -32,6 +34,7 @@ def get_indicators(
     countries_override=None,
     errors_on_exit=None,
     use_live=True,
+    fallbacks_root="",
 ):
     Country.countriesdata(
         use_live=use_live,
@@ -48,6 +51,19 @@ def get_indicators(
     adminlevel = AdminLevel(configuration)
     regional_configuration = configuration["regional"]
     RegionLookup.load(regional_configuration, countries, {"HRPs": hrp_countries})
+    if fallbacks_root is not None:
+        fallbacks_path = join(fallbacks_root, configuration["json"]["output"])
+        levels_mapping = {
+            "global": "allregions_data",
+            "regional": "regional_data",
+            "national": "national_data",
+            "subnational": "subnational_data",
+        }
+        Fallbacks.add(
+            fallbacks_path,
+            levels_mapping=levels_mapping,
+            sources_key="sources_data",
+        )
     Sources.set_default_source_date_format("%Y-%m-%d")
     runner = Runner(
         countries,
