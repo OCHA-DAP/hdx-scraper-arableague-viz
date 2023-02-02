@@ -313,6 +313,21 @@ scraper_national:
           - "CERFFundingGM4"
         output_hxl:
           - "#value+cerf+funding+gm4+total+usd"
+  contributions:
+    dataset: "cerf-donor-contributions"
+    format: "csv"
+    admin:
+      - "countryCode"
+    input:
+      - "donorreceived"
+    transform:
+      "donorreceived": "get_numeric_if_possible(donorreceived)"
+    sum:
+      - formula: "donorreceived"
+    output:
+      - "CERFContributions"
+    output_hxl:
+      - "#value+cerf+contributions+total+usd"
   sadd:
     dataset: "covid-19-sex-disaggregated-data-tracker"
     format: "csv"
@@ -764,6 +779,8 @@ regional:
     "#value+cerf+funding+gm3+total+usd":
       action: "sum"
     "#value+cerf+funding+gm4+total+usd":
+      action: "sum"
+    "#value+cerf+contributions+total+usd":
       action: "sum"
     "#value+funding+hrp+required+usd":
       output: "RequiredFunding"
