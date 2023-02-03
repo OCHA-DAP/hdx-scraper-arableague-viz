@@ -4,6 +4,8 @@ tabs:
   regional: "RegionalData"
   national: "NationalData"
   subnational: "SubnationalData"
+  covid_series: "CovidSeries"
+  covid_trend: "CovidTrend"
   sources: "Sources"
 
 
@@ -17,6 +19,8 @@ json:
 additional_sources:
   - indicator: "#food-prices"
     dataset: "global-wfp-food-prices"
+  - indicator: "#vaccination-campaigns"
+    dataset: "immunization-campaigns-impacted"
   - indicator: "#access-data"
     source: "Multiple sources"
     force_date_today: True
@@ -320,6 +324,29 @@ scraper_national:
       - "CERFContributions"
     output_hxl:
       - "#value+cerf+contributions+total+usd"
+  covidtests:
+    dataset: "total-covid-19-tests-performed-by-country"
+    format: "xlsx"
+    prefilter: "new_tests is not None and new_tests > 0"
+    date: "date"
+    date_type: "date"
+    admin:
+      - "iso_code"
+    input:
+      - "new_tests"
+      - "new_tests_per_thousand"
+      - "new_tests_smoothed_per_thousand"
+      - "positive_rate"
+    output:
+      - "New Tests"
+      - "New Tests Per Thousand"
+      - "New Tests Per Thousand (7-day)"
+      - "Positive Test Rate"
+    output_hxl:
+      - "#affected+tested"
+      - "#affected+tested+per1000"
+      - "#affected+tested+avg+per1000"
+      - "#affected+tested+positive+pct"
   cadre_harmonise:
     dataset: "cadre-harmonise"
     format: "xlsx"
@@ -409,6 +436,56 @@ scraper_national:
       - "NoChildrenSAM"
     output_hxl:
       - "#affected+children+sam"
+  covax:
+    dataset: "covid-19-vaccine-doses-in-hrp-countries"
+    format: "csv"
+    use_hxl: True
+    admin:
+      - "#country+code"
+    input:
+      - "#capacity+covax+delivered+doses"
+      - "#capacity+others+delivered+doses"
+      - "#capacity+delivered+total"
+      - "#capacity+coverage+one_dose"
+      - "#meta+source_country"
+    input_ignore_vals:
+      - "N/A"
+    transform:
+      "#capacity+covax+delivered+doses": "get_numeric_if_possible(#capacity+covax+delivered+doses)"
+      "#capacity+others+delivered+doses": "get_numeric_if_possible(#capacity+others+delivered+doses)"
+      "#capacity+delivered+total": "get_numeric_if_possible(#capacity+delivered+total)"
+      "#capacity+coverage+one_dose": "number_format(get_numeric_if_possible(#capacity+coverage+one_dose), trailing_zeros=False)"
+    output:
+      - "Covax Delivered Doses"
+      - "Other Delivered Doses"
+      - "Total Delivered Doses"
+      - "Population % covered by delivered doses"
+      - "Source country for doses"
+    output_hxl:
+      - "#capacity+doses+delivered+covax"
+      - "#capacity+doses+delivered+others"
+      - "#capacity+doses+delivered+total"
+      - "#targeted+doses+delivered+pct"
+      - "#meta+source+doses+country+name"
+  ourworldindata:
+    dataset: "covid-19-vaccinations"
+    format: "csv"
+    use_hxl: True
+    external_filter:
+      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVzu79PPTfaA2syevOQfyRRjy63dJWitqu0fFbXIQCzoUn9K9TiMWMRvFGg1RBsnLmgYugzSEiAye2/pub?gid=992438980&single=true&output=csv"
+      hxl:
+       - "#country+code"
+    prefilter: "#total+vaccinations is not None"
+    admin:
+      - "#country+code"
+    date: "#date"
+    date_type: "date"
+    input:
+      - "#total+vaccinations"
+    output:
+      - "TotalDosesAdministered"
+    output_hxl:
+      - "#capacity+doses+administered+total"
   worldbank:
     dataset: "harmonized-covid-19-household-monitoring-surveys"
     format: "xlsx"
@@ -469,6 +546,20 @@ scraper_national:
           - "DecreasedWages"
         output_hxl:
           - "#affected+less_wages+hh+pct"
+  covax_allocations:
+    dataset: "covax-round-6-allocations"
+    format: "csv"
+    headers: 2
+    admin:
+      - "ISO3"
+    input:
+      - "Total to date"
+    transform:
+      "Total to date": "get_numeric_if_possible(Total to date)"
+    output:
+      - "DosesAllocated"
+    output_hxl:
+      - "#capacity+doses+forecast+covax"
   food_basket:
     dataset: "cost-of-the-food-basket"
     url: "https://wfp.sharepoint.com/:x:/s/EconomicMarketAnalysis/EVeSfcSQAvtGtAE3aseaNHoB5uENuNW4anaJ84ryqQI8Qw?download=1"
@@ -508,6 +599,10 @@ food_prices:
   base_url: "https://api.wfp.org"
   format: "csv"
 
+vaccination_campaigns:
+  dataset: "immunization-campaigns-impacted"
+  format: "csv"
+
 unhcr:
   source: "UNHCR"
   source_url: "https://data.humdata.org/organization/unhcr"
@@ -525,6 +620,15 @@ inform:
   url: "https://api.acaps.org/api/v1/inform-severity-index/%s/?page=1"
   format: "xlsx"
 
+who_covid:
+  dataset: "coronavirus-covid-19-cases-and-deaths"
+  format: "csv"
+
+covax_deliveries:
+  dataset: "covid-19-vaccine-doses-in-hrp-countries"
+  format: "csv"
+  url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVzu79PPTfaA2syevOQfyRRjy63dJWitqu0fFbXIQCzoUn9K9TiMWMRvFGg1RBsnLmgYugzSEiAye2/pub?gid=1635331605&single=true&output=csv"
+
 regional:
   dataset: "unocha-office-locations"
   format: "xlsx"
@@ -536,6 +640,10 @@ regional:
 
   aggregate:
     "#population":
+      action: "sum"
+    "#affected+infected":
+      action: "sum"
+    "#affected+killed":
       action: "sum"
     "#affected+inneed":
       action: "sum"
@@ -589,7 +697,19 @@ regional:
       action: "mean"
     "#activity+cbpf+project+insecurity+pct":
       action: "mean"
+    "#vaccination+postponed+num":
+      action: "sum"
+    "#capacity+doses+delivered+covax":
+      action: "sum"
+    "#capacity+doses+delivered+others":
+      action: "sum"
+    "#capacity+doses+delivered+total":
+      action: "sum"
+    "#capacity+doses+administered+total":
+      action: "sum"
     "#affected+children+sam":
+      action: "sum"
+    "#capacity+doses+forecast+covax":
       action: "sum"
     "#affected+food+ipc+p3plus+num":
       output: "FoodInsecurityP3+"

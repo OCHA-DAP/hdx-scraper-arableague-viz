@@ -9,12 +9,15 @@ from hdx.scraper.utilities.region_lookup import RegionLookup
 from hdx.scraper.utilities.sources import Sources
 from hdx.scraper.utilities.writer import Writer
 
+from .covax_deliveries import CovaxDeliveries
 from .food_prices import FoodPrices
 from .fts import FTS
 from .inform import Inform
 from .iom_dtm import IOMDTM
 from .ipc import IPC
 from .unhcr import UNHCR
+from .vaccination_campaigns import VaccinationCampaigns
+from .who_covid import WHOCovid
 from .whowhatwhere import WhoWhatWhere
 
 logger = logging.getLogger(__name__)
@@ -80,19 +83,29 @@ def get_indicators(
             level_name=level_name,
             suffix=suffix,
         )
+    who_covid = WHOCovid(configuration["who_covid"], outputs, countries)
     ipc = IPC(configuration["ipc"], today, countries, adminlevel)
 
     fts = FTS(configuration["fts"], today, outputs, countries)
     food_prices = FoodPrices(configuration["food_prices"], today, countries)
+    vaccination_campaigns = VaccinationCampaigns(
+        configuration["vaccination_campaigns"],
+        countries,
+        outputs,
+    )
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
+    covax_deliveries = CovaxDeliveries(configuration["covax_deliveries"], countries)
     national_names = configurable_scrapers["national"] + [
         "food_prices",
+        "vaccination_campaigns",
         "fts",
         "unhcr",
         "inform",
         "ipc",
+        "covax_deliveries",
     ]
+    national_names.insert(1, "who_covid")
 
     whowhatwhere = WhoWhatWhere(configuration["whowhatwhere"], today, adminlevel)
     iomdtm = IOMDTM(configuration["iom_dtm"], today, adminlevel)
@@ -105,11 +118,14 @@ def get_indicators(
 
     runner.add_customs(
         (
+            who_covid,
             ipc,
             fts,
             food_prices,
+            vaccination_campaigns,
             unhcr,
             inform,
+            covax_deliveries,
             whowhatwhere,
             iomdtm,
         )
