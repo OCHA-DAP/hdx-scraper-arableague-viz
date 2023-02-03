@@ -10,8 +10,6 @@ from hdx.scraper.utilities.sources import Sources
 from hdx.scraper.utilities.writer import Writer
 
 from .covax_deliveries import CovaxDeliveries
-from .education_closures import EducationClosures
-from .education_enrolment import EducationEnrolment
 from .food_prices import FoodPrices
 from .fts import FTS
 from .inform import Inform
@@ -98,18 +96,6 @@ def get_indicators(
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
     covax_deliveries = CovaxDeliveries(configuration["covax_deliveries"], countries)
-    education_closures = EducationClosures(
-        configuration["education_closures"],
-        today,
-        countries,
-        RegionLookup.iso3_to_regions["ALL"],
-    )
-    education_enrolment = EducationEnrolment(
-        configuration["education_enrolment"],
-        education_closures,
-        countries,
-        RegionLookup.iso3_to_regions["ALL"],
-    )
     national_names = configurable_scrapers["national"] + [
         "food_prices",
         "vaccination_campaigns",
@@ -118,8 +104,6 @@ def get_indicators(
         "inform",
         "ipc",
         "covax_deliveries",
-        "education_closures",
-        "education_enrolment",
     ]
     national_names.insert(1, "who_covid")
 
@@ -142,8 +126,6 @@ def get_indicators(
             unhcr,
             inform,
             covax_deliveries,
-            education_closures,
-            education_enrolment,
             whowhatwhere,
             iomdtm,
         )
@@ -157,7 +139,6 @@ def get_indicators(
         RegionLookup.iso3_to_regions["ALL"],
         force_add_to_run=True,
     )
-    regional_names.extend(["education_closures", "education_enrolment"])
 
     runner.run(
         prioritise_scrapers=(

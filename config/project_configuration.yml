@@ -626,17 +626,6 @@ scraper_national:
       - "ChangeInFoodBasketCost"
     output_hxl:
       - "#indicator+foodbasket+change+pct"
-  closure_duration:
-    dataset: "global-school-closures-covid19"
-    format: "xlsx"
-    admin:
-      - "Country"
-    input:
-      - "Duration of FULL and PARTIAL school closures (in weeks)"
-    output:
-      - "Full Partial Closure Duration"
-    output_hxl:
-      - "#impact+full_partial+weeks"
 
 unhcr_myanmar_idps:
   url: "https://data.unhcr.org/population/?widget_id=264111&geo_id=693&population_group=5407,4999"
@@ -680,16 +669,6 @@ covax_deliveries:
   dataset: "covid-19-vaccine-doses-in-hrp-countries"
   format: "csv"
   url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTVzu79PPTfaA2syevOQfyRRjy63dJWitqu0fFbXIQCzoUn9K9TiMWMRvFGg1RBsnLmgYugzSEiAye2/pub?gid=1635331605&single=true&output=csv"
-
-education_closures:
-  dataset: "global-school-closures-covid19"
-  resource: "School Closures"
-  format: "csv"
-
-education_enrolment:
-  dataset: "global-school-closures-covid19"
-  resource: "Enrollment data"
-  format: "xlsx"
 
 regional:
   dataset: "unocha-office-locations"
