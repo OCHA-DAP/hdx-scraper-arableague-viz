@@ -4,8 +4,6 @@ tabs:
   regional: "RegionalData"
   national: "NationalData"
   subnational: "SubnationalData"
-  covid_series: "CovidSeries"
-  covid_trend: "CovidTrend"
   sources: "Sources"
 
 
@@ -322,29 +320,6 @@ scraper_national:
       - "CERFContributions"
     output_hxl:
       - "#value+cerf+contributions+total+usd"
-  covidtests:
-    dataset: "total-covid-19-tests-performed-by-country"
-    format: "xlsx"
-    prefilter: "new_tests is not None and new_tests > 0"
-    date: "date"
-    date_type: "date"
-    admin:
-      - "iso_code"
-    input:
-      - "new_tests"
-      - "new_tests_per_thousand"
-      - "new_tests_smoothed_per_thousand"
-      - "positive_rate"
-    output:
-      - "New Tests"
-      - "New Tests Per Thousand"
-      - "New Tests Per Thousand (7-day)"
-      - "Positive Test Rate"
-    output_hxl:
-      - "#affected+tested"
-      - "#affected+tested+per1000"
-      - "#affected+tested+avg+per1000"
-      - "#affected+tested+positive+pct"
   cadre_harmonise:
     dataset: "cadre-harmonise"
     format: "xlsx"
@@ -550,10 +525,6 @@ inform:
   url: "https://api.acaps.org/api/v1/inform-severity-index/%s/?page=1"
   format: "xlsx"
 
-who_covid:
-  dataset: "coronavirus-covid-19-cases-and-deaths"
-  format: "csv"
-
 regional:
   dataset: "unocha-office-locations"
   format: "xlsx"
@@ -565,10 +536,6 @@ regional:
 
   aggregate:
     "#population":
-      action: "sum"
-    "#affected+infected":
-      action: "sum"
-    "#affected+killed":
       action: "sum"
     "#affected+inneed":
       action: "sum"

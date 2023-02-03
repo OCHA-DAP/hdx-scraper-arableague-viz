@@ -15,7 +15,6 @@ from .inform import Inform
 from .iom_dtm import IOMDTM
 from .ipc import IPC
 from .unhcr import UNHCR
-from .who_covid import WHOCovid
 from .whowhatwhere import WhoWhatWhere
 
 logger = logging.getLogger(__name__)
@@ -81,7 +80,6 @@ def get_indicators(
             level_name=level_name,
             suffix=suffix,
         )
-    who_covid = WHOCovid(configuration["who_covid"], outputs, countries)
     ipc = IPC(configuration["ipc"], today, countries, adminlevel)
 
     fts = FTS(configuration["fts"], today, outputs, countries)
@@ -95,7 +93,6 @@ def get_indicators(
         "inform",
         "ipc",
     ]
-    national_names.insert(1, "who_covid")
 
     whowhatwhere = WhoWhatWhere(configuration["whowhatwhere"], today, adminlevel)
     iomdtm = IOMDTM(configuration["iom_dtm"], today, adminlevel)
@@ -108,7 +105,6 @@ def get_indicators(
 
     runner.add_customs(
         (
-            who_covid,
             ipc,
             fts,
             food_prices,
