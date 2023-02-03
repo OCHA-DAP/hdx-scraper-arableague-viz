@@ -9,7 +9,6 @@ from hdx.scraper.utilities.region_lookup import RegionLookup
 from hdx.scraper.utilities.sources import Sources
 from hdx.scraper.utilities.writer import Writer
 
-from .covax_deliveries import CovaxDeliveries
 from .food_prices import FoodPrices
 from .fts import FTS
 from .inform import Inform
@@ -89,14 +88,12 @@ def get_indicators(
     food_prices = FoodPrices(configuration["food_prices"], today, countries)
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
-    covax_deliveries = CovaxDeliveries(configuration["covax_deliveries"], countries)
     national_names = configurable_scrapers["national"] + [
         "food_prices",
         "fts",
         "unhcr",
         "inform",
         "ipc",
-        "covax_deliveries",
     ]
     national_names.insert(1, "who_covid")
 
@@ -117,7 +114,6 @@ def get_indicators(
             food_prices,
             unhcr,
             inform,
-            covax_deliveries,
             whowhatwhere,
             iomdtm,
         )
