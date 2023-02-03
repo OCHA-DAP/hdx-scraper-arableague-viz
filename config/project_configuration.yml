@@ -19,8 +19,6 @@ json:
 additional_sources:
   - indicator: "#food-prices"
     dataset: "global-wfp-food-prices"
-  - indicator: "#vaccination-campaigns"
-    dataset: "immunization-campaigns-impacted"
   - indicator: "#access-data"
     source: "Multiple sources"
     force_date_today: True
@@ -597,10 +595,6 @@ fts:
 food_prices:
   dataset: "global-wfp-food-prices"
   base_url: "https://api.wfp.org"
-  format: "csv"
-
-vaccination_campaigns:
-  dataset: "immunization-campaigns-impacted"
   format: "csv"
 
 unhcr:

@@ -16,7 +16,6 @@ from .inform import Inform
 from .iom_dtm import IOMDTM
 from .ipc import IPC
 from .unhcr import UNHCR
-from .vaccination_campaigns import VaccinationCampaigns
 from .who_covid import WHOCovid
 from .whowhatwhere import WhoWhatWhere
 
@@ -88,17 +87,11 @@ def get_indicators(
 
     fts = FTS(configuration["fts"], today, outputs, countries)
     food_prices = FoodPrices(configuration["food_prices"], today, countries)
-    vaccination_campaigns = VaccinationCampaigns(
-        configuration["vaccination_campaigns"],
-        countries,
-        outputs,
-    )
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
     covax_deliveries = CovaxDeliveries(configuration["covax_deliveries"], countries)
     national_names = configurable_scrapers["national"] + [
         "food_prices",
-        "vaccination_campaigns",
         "fts",
         "unhcr",
         "inform",
@@ -122,7 +115,6 @@ def get_indicators(
             ipc,
             fts,
             food_prices,
-            vaccination_campaigns,
             unhcr,
             inform,
             covax_deliveries,
