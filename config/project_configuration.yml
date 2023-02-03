@@ -25,10 +25,6 @@ additional_sources:
     source: "Multiple sources"
     force_date_today: True
     source_url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRSzJzuyVt9i_mkRQ2HbxrUl2Lx2VIhkTHQM-laE8NyhQTy70zQTCuFS3PXbhZGAt1l2bkoA4_dAoAP/pub?gid=1565063847&single=true&output=csv"
-  - indicator: "#affected+infected+sex+new+avg+per100000"
-    source: "Multiple sources"
-    force_date_today: True
-    source_url: "https://data.humdata.org/search?q=((organization:world-health-organization%20AND%20notes:Coronavirus)%20OR%20organization:global-health-50-50)"
   - indicator: "#affected+food+p3plus+num"
     source: "Multiple sources"
     force_date_today: True
@@ -328,43 +324,6 @@ scraper_national:
       - "CERFContributions"
     output_hxl:
       - "#value+cerf+contributions+total+usd"
-  sadd:
-    dataset: "covid-19-sex-disaggregated-data-tracker"
-    format: "csv"
-# No longer needed
-#    external_filter:
-      # Editable link https://docs.google.com/spreadsheets/d/1KReA4uWurU7KXHDaSrEcR7hUTUFuDKO-nZviZyaNdPI/edit#gid=434885896
-#      url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vR9PhPG7-aH0EkaBGzXYlrO9252gqs-UuKIeDQr9D3pOLBOdQ_AoSwWi21msHsdyT7thnjuhSY6ykSX/pub?gid=434885896&single=true&output=csv"
-#      hxl:
-#        - "#country+code+v_iso2"
-    admin:
-      - "country_code"
-    input:
-      - "cases_male_pct"
-      - "cases_female_pct"
-      - "deaths_male_pct"
-      - "deaths_female_pct"
-    transform:
-      "cases_male_pct": "number_format(get_numeric_if_possible(cases_male_pct), trailing_zeros=False)"
-      "cases_female_pct": "number_format(get_numeric_if_possible(cases_female_pct), trailing_zeros=False)"
-      "deaths_male_pct": "number_format(get_numeric_if_possible(deaths_male_pct), trailing_zeros=False)"
-      "deaths_female_pct": "number_format(get_numeric_if_possible(deaths_female_pct), trailing_zeros=False)"
-    output:
-      - "Cases (% male)"
-      - "Cases (% female)"
-      - "Deaths (% male)"
-      - "Deaths (% female)"
-    output_hxl:
-      - "#affected+infected+m+pct"
-      - "#affected+f+infected+pct"
-      - "#affected+killed+m+pct"
-      - "#affected+f+killed+pct"
-  oxcgrt:
-    dataset: "oxford-covid-19-government-response-tracker"
-    format: "csv"
-    use_hxl: True
-    date: "#date"
-    date_type: "date"
   covidtests:
     dataset: "total-covid-19-tests-performed-by-country"
     format: "xlsx"
