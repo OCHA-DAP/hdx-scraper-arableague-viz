@@ -626,49 +626,6 @@ scraper_national:
       - "ChangeInFoodBasketCost"
     output_hxl:
       - "#indicator+foodbasket+change+pct"
-  financing:
-    dataset: "world-bank-and-gavi-vaccine-financing"
-    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSSKfpC4IaUs9iWc7TSrOoPNuR7cJ4civ8csvt8S_RcCXVG7xNxcyQ8Z-vSnJZ_lXYOTGlLh6Vnmn1Y/pub?gid=0&single=true&output=csv"
-    format: "csv"
-    admin:
-      - "ISO3"
-    input:
-      - "Amount ($m)"
-      - "GAVI CDS (early access) Approved"
-      - "GAVI CDS (needs based) Approved"
-      - "GAVI CDS (early access) Disbursed"
-      - "GAVI CDS (needs based) Disbursed"
-      - "TOTAL (WB+GAVI) ($m)"
-    input_ignore_vals:
-      - "#REF!"
-    transform:
-      "Amount ($m)": "get_numeric_if_possible(Amount ($m))"
-      "GAVI CDS (early access) Approved": "get_numeric_if_possible(GAVI CDS (early access) Approved)"
-      "GAVI CDS (needs based) Approved": "get_numeric_if_possible(GAVI CDS (needs based) Approved)"
-      "GAVI CDS (early access) Disbursed": "get_numeric_if_possible(GAVI CDS (early access) Disbursed)"
-      "GAVI CDS (needs based) Disbursed": "get_numeric_if_possible(GAVI CDS (needs based) Disbursed)"
-      "TOTAL (WB+GAVI) ($m)": "get_numeric_if_possible(TOTAL (WB+GAVI) ($m))"
-    sum:
-      - formula: "Amount ($m)"
-      - formula: "GAVI CDS (early access) Approved"
-      - formula: "GAVI CDS (needs based) Approved"
-      - formula: "GAVI CDS (early access) Disbursed"
-      - formula: "GAVI CDS (needs based) Disbursed"
-      - formula: "TOTAL (WB+GAVI) ($m)"
-    output:
-      - "WorldBankFinancingApproved"
-      - "GAVICDSEarlyAccessApproved"
-      - "GAVICDSNeedsApproved"
-      - "GAVICDSEarlyAccessDisbursed"
-      - "GAVICDSNeedsDisbursed"
-      - "WorldBankGAVIFinancingTotal"
-    output_hxl:
-      - "#value+financing+worldbank+approved"
-      - "#value+financing+gavi+earlyaccess+approved"
-      - "#value+financing+gavi+needs+approved"
-      - "#value+financing+gavi+earlyaccess+disbursed"
-      - "#value+financing+gavi+needs+disbursed"
-      - "#value+financing+approved"
   closure_duration:
     dataset: "global-school-closures-covid19"
     format: "xlsx"
@@ -815,18 +772,6 @@ regional:
     "#affected+children+sam":
       action: "sum"
     "#capacity+doses+forecast+covax":
-      action: "sum"
-    "#value+financing+worldbank+approved":
-      action: "sum"
-    "#value+financing+gavi+earlyaccess+approved":
-      action: "sum"
-    "#value+financing+gavi+needs+approved":
-      action: "sum"
-    "#value+financing+gavi+earlyaccess+disbursed":
-      action: "sum"
-    "#value+financing+gavi+needs+disbursed":
-      action: "sum"
-    "#value+financing+approved":
       action: "sum"
     "#affected+food+ipc+p3plus+num":
       output: "FoodInsecurityP3+"
