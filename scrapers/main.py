@@ -9,7 +9,6 @@ from hdx.scraper.utilities.region_lookup import RegionLookup
 from hdx.scraper.utilities.sources import Sources
 from hdx.scraper.utilities.writer import Writer
 
-from .food_prices import FoodPrices
 from .fts import FTS
 from .inform import Inform
 from .iom_dtm import IOMDTM
@@ -83,11 +82,9 @@ def get_indicators(
     ipc = IPC(configuration["ipc"], today, countries, adminlevel)
 
     fts = FTS(configuration["fts"], today, outputs, countries)
-    food_prices = FoodPrices(configuration["food_prices"], today, countries)
     unhcr = UNHCR(configuration["unhcr"], today, countries)
     inform = Inform(configuration["inform"], today, countries)
     national_names = configurable_scrapers["national"] + [
-        "food_prices",
         "fts",
         "unhcr",
         "inform",
@@ -107,7 +104,7 @@ def get_indicators(
         (
             ipc,
             fts,
-            food_prices,
+
             unhcr,
             inform,
             whowhatwhere,

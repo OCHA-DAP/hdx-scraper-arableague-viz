@@ -15,8 +15,6 @@ json:
   output: "all.json"
 
 additional_sources:
-  - indicator: "#food-prices"
-    dataset: "global-wfp-food-prices"
   - indicator: "#access-data"
     source: "Multiple sources"
     force_date_today: True
@@ -409,11 +407,6 @@ fts:
   source: "OCHA"
   source_url: "https://data.humdata.org/dataset/covid-19-data-visual-inputs"
   url: "https://api.hpc.tools/v"
-
-food_prices:
-  dataset: "global-wfp-food-prices"
-  base_url: "https://api.wfp.org"
-  format: "csv"
 
 unhcr:
   source: "UNHCR"
