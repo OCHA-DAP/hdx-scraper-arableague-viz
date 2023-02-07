@@ -312,9 +312,10 @@ scraper_national:
   contributions:
     dataset: "cerf-donor-contributions"
     format: "csv"
-    prefilter: "donortype == 'Member State'"
+    prefilter: "donortype == 'Member State' and str(donorreceived) != '0'"
     filter_cols:
       - "donortype"
+      - "donorreceived"
     admin:
       - "countryCode"
     input:
