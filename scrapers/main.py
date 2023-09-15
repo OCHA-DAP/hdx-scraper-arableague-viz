@@ -43,6 +43,7 @@ def get_indicators(
     hrp_countries = configuration["HRPs"]
     configuration["countries_fuzzy_try"] = countries
     adminlevel = AdminLevel(configuration)
+    adminlevel.setup_from_admin_info(configuration["admin_info"])
     regional_configuration = configuration["regional"]
     RegionLookup.load(regional_configuration, countries, {"HRPs": hrp_countries})
     if fallbacks_root is not None:
